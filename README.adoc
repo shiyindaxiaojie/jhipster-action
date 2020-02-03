@@ -1,0 +1,73 @@
+= Eden* Microservice
+
+image:https://github.com/eden-lab/eden-microservice/workflows/Application%20CI/badge.svg[]
+image:src/docs/asciidoc/language-java-blue.svg[]
+image:src/docs/asciidoc/license-apache 2.0-red.svg[]
+
+Eden* Microservice 是一组基于 Spring Cloud 体系的微服务应用集，提供了注册中心、配置中心、认证中心和网关中心等模块，
+开箱即用，配置灵活，支持二次开发。
+
+== 基本介绍
+
+1. 基于 Eureka 的服务注册框架，提供了丰富的可视化界面，支持集群服务；
+2. 可选本地或者 Github 作为配置中心，支持基于 KafKa 或者 RabbitMQ 推送配置变更消息；
+3. 网关支持配置服务的访问控制、API 限流过滤器，客户端统一通过网关调用服务；
+4. 认证中心使用 OAuth2 作为认证框架，服务间的调用自动集成客户端授权。
+
+== 安装入门
+
+=== 构建源码
+
+Eden* Spring Microservice 的源码支持在 JDK 1.7 以上的版本编译构建
+
+CAUTION: 以下情况需要在 JDK 1.8 以上的版本运行：运行 liquibase-maven-plugin 插件执行性能测试；
+使用 swagger2markup-maven-plugin 插件生成接口文档；集成 zipkin 依赖组件。
+
+您可以使用以下命令构建打包：
+
+[source,shell,indent=0]
+----
+
+$ ./mvnw clean package
+
+----
+
+
+
+如果在认证中心启用非对称加密，可以通过 keytool 工具在命令行生成公钥
+
+[source,shell,indent=1]
+----
+
+keytool -genkey -alias uaa -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+
+----
+
+== 模块清单
+
+|===
+| 应用名称 | 描述 | 技术栈
+
+| eden-configserver
+| 配置中心
+| Spring Cloud Config
+
+| eden-gateway
+| 网关中心
+| Netflix Zuul、Feign、Hystrix、Ribbon
+
+| eden-registry
+| 注册中心
+| Netflix Eureka、Spring Boot Admin
+
+| eden-uaa
+| 认证中心
+| Spring Security OAuth2、Spring Security Jwt
+|===
+
+=== 模块依赖
+image:src/docs/staruml/html-docs/diagrams/d5507f74c7649420f3e80c315002ce65.svg[width="600"]
+
+== 许可声明
+Eden* Spring Boot 为本人在工作之余开发而成，主要用于学习交流，完全开源免费，遵循
+https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 License]

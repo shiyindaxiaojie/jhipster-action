@@ -1,0 +1,19 @@
+configserver:
+    name: uaa
+    status: Connection to uaa-dev.yml successfully!
+
+eden:
+    security:
+        authorization:
+            client-credentials:
+                client-id: internal
+                client-secret: internal
+            password:
+                client-id: webclient
+                secret: webclient
+        authentication:
+            jwt:
+                secret: 21232f297a57a5a743894a0e4a801fc321232f297a57a5a743894a0e4a801fc3
+        user:
+            name: admin
+            password: 21232f297a57a5a743894a0e4a801fc3

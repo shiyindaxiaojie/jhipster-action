@@ -1,0 +1,9 @@
+version: '3'
+services:
+    registry-app:
+        image: registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_PROFILES_INCLUDES=native
+        ports:
+            - 8761:8761

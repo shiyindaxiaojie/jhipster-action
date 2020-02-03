@@ -1,0 +1,9 @@
+version: '3'
+services:
+    registry-app:
+        image: configserver
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_PROFILES_INCLUDES=native
+        ports:
+            - 8888:8888

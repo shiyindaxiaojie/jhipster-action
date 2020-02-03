@@ -1,0 +1,30 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://${security.user.name}:${security.user.password}@localhost:8761/eureka/,http://${security.user.name}:${security.user.password}@localhost:8762/eureka/
+
+security:
+    user:
+        name: admin
+        password: 21232f297a57a5a743894a0e4a801fc3
+
+spring:
+    cloud:
+        bus:
+            refresh:
+                enabled: true
+        config:
+            discovery:
+                enabled: true
+                serviceId: configserver
+            fail-fast: false
+            label: master
+            name: ${spring.application.name}
+            password: ${security.user.password}
+            profile: ${spring.profiles.active}
+            username: ${security.user.name}
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: admin
+        password: DevOps@303

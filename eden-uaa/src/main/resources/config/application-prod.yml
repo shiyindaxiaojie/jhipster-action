@@ -1,0 +1,78 @@
+application:
+    user:
+        remove-not-activated-amount: -3
+
+eden:
+    integration:
+        logstash:
+            enabled: true
+    security:
+        oauth2:
+            authorization:
+                access-token-uri: http://uaa/oauth/token
+                access-token-uri-service-id: uaa
+                client-credentials:
+                    client-id: client
+                    client-secret: client
+                password:
+                    client-id: password
+                    client-secret: password
+                public-token-key-uri: http://uaa/oauth/token_key
+                public-token-key-uri-service-id: uaa
+            key-store:
+                name: keystore.jks
+                password: keystore
+                alias: uaa
+
+eureka:
+    client:
+        instance-info-replication-interval-seconds: 10
+        metadata:
+            user:
+                name: ${eden.security.user.name}
+                password: ${eden.security.user.password}
+        registry-fetch-interval-seconds: 10
+    instance:
+        lease-renewal-interval-in-seconds: 5
+        lease-expiration-duration-in-seconds: 10
+
+logging:
+    file: target/${spring.application.name}.log
+    level:
+        ROOT: WARN
+        org.ylzl.eden: INFO
+
+security:
+    user:
+        name: admin
+        password: 21232f297a57a5a743894a0e4a801fc3
+        roles: ROLE_ADMIN
+
+server:
+    compression:
+        enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css,application/javascript,application/json
+        min-response-size: 1024
+    port: 9999
+
+spring:
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:mysql://localhost:3306/#project.name#?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        password: DevOps@303
+        hikari:
+            data-source-properties:
+                cachePrepStmts: true
+                prepStmtCacheSize: 250
+                prepStmtCacheSqlLimit: 2048
+                useServerPrepStmts: true
+    jpa:
+        database: #spring.jpa.database#
+        database-platform: #spring.jpa.database-platform#
+        properties:
+            hibernate:
+                generate_statistics: false
+        show-sql: false
+    thymeleaf:
+        cache: true

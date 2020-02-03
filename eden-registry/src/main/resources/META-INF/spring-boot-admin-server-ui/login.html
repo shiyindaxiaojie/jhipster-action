@@ -1,0 +1,108 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>注册中心</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
+  <link rel="stylesheet" type="text/css" href="login/login.css"/>
+</head>
+
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1 div-login">
+      <div class="page-header">
+        <h2>注册中心</h2>
+      </div>
+      <div>
+        <form id="form-login" method="post" class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-1">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input class="form-control" type="text" name="username" placeholder="请输入用户名"/>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-1">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input class="form-control" type="password" name="password" placeholder="请输入密码"/>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-1">
+              <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-eye-open"></i>
+                                </span>
+                <input class="form-control" type="text" id="captcha" name="captcha"
+                       placeholder="请输入验证码"/>
+                <input type="hidden" id="captchaHidden"/>
+                <span class="input-group-addon" id="captchaGroupAddon">
+                                    <span id="captchaCanvas"></span>
+                                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-1">
+              <button type="submit" class="btn btn-primary" id="btn-login">登录</button>
+            </div>
+            <div class="col-sm-8">
+              <label class="checkbox" for="rememberMe">
+                <input type="checkbox" name="rememberMe" checked="checked" value="true"/>
+                <span>记住我</span>
+              </label>
+            </div>
+          </div>
+        </form>
+        <div class="col-sm-10 col-sm-offset-1 alert" id="div-info">
+          <a href="#" class="close" data-dismiss="alert">
+            &times;
+          </a>
+          <span id="div-info-span"></span>
+        </div>
+      </div>
+      <div class="col-sm-12 page-footer">
+        <span>Copyright © 1813986321@qq.com</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/webjars/jquery/2.1.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="/webjars/bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
+<script src="/webjars/bootstrapvalidator/0.5.2/js/language/zh_CN.js"></script>
+<script src="login/md5.min.js"></script>
+<script src="login/login.js"></script>
+<script src="profile/page-ribbon.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+info:
+    description: #project.description#
+
+spring:
+    application:
+        name: #project.name#
+    cloud:
+        config:
+            server:
+                bootstrap: true
+                native:
+                    search-locations: classpath:/central-config
+                prefix: /config
+            fail-fast: true
+            name: #project.name#
+    profiles:
+        active: #spring.profiles.active#
+        include: native
+
+

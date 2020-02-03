@@ -1,0 +1,17 @@
+configserver:
+    name: configserver
+    status: Connection to configserver-dev.yml successfully!
+
+eden:
+    security:
+        authentication:
+            jwt:
+                secret: 21232f297a57a5a743894a0e4a801fc321232f297a57a5a743894a0e4a801fc3
+        user:
+            name: admin
+            password: 21232f297a57a5a743894a0e4a801fc3
+
+
+
+
+
