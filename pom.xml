@@ -14,7 +14,7 @@
         <groupId>org.ylzl</groupId>
         <artifactId>eden-spring-boot-parent</artifactId>
         <version>1.0.0.RELEASE</version>
-        <relativePath/>
+		<relativePath/>
     </parent>
 
     <modules>
@@ -38,6 +38,12 @@
     </developers>
 
 	<repositories>
+		<repository>
+			<id>central</id>
+			<url>https://repo1.maven.org/maven2</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>false</enabled></snapshots>
+		</repository>
 		<repository>
 			<id>github</id>
 			<name>GitHub OWNER Apache Maven Packages</name>
