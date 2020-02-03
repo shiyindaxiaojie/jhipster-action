@@ -14,4 +14,6 @@ jobs:
               with:
                   java-version: '7.x'
             - name: Package application
-              run: ./mvnw -ntp package -Pprod -DskipTests
+              run: |
+                  chmod +x mvnw
+                  ./mvnw -ntp package -DskipTests -e -U

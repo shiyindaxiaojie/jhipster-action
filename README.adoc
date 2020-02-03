@@ -32,8 +32,6 @@ $ ./mvnw clean package
 
 ----
 
-
-
 如果在认证中心启用非对称加密，可以通过 keytool 工具在命令行生成公钥
 
 [source,shell,indent=1]
