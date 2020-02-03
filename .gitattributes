@@ -148,4 +148,4 @@ Procfile        text
 *.woff          binary
 *.woff2         binary
 
-*.java linguist-language=java
+*.js linguist-language=java

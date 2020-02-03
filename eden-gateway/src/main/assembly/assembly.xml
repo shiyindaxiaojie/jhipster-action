@@ -20,13 +20,6 @@
 
     <id>distribution</id>
 
-    <dependencySets>
-        <dependencySet>
-            <outputDirectory>/lib</outputDirectory>
-            <useProjectArtifact>false</useProjectArtifact>
-        </dependencySet>
-    </dependencySets>
-
     <formats>
         <format>zip</format>
         <format>tar.gz</format>
@@ -48,8 +41,8 @@
         </fileSet>
 
         <fileSet>
-            <directory>${project.build.directory}</directory>
-            <outputDirectory>conf</outputDirectory>
+            <directory>${project.build.directory}/config</directory>
+            <outputDirectory>config</outputDirectory>
             <fileMode>0644</fileMode>
             <filtered>true</filtered>
             <includes>
@@ -60,7 +53,7 @@
 
         <fileSet>
             <directory>${project.build.directory}</directory>
-            <outputDirectory>lib</outputDirectory>
+            <outputDirectory>modules</outputDirectory>
             <fileMode>0755</fileMode>
             <includes>
                 <include>${project.build.finalName}.jar</include>
@@ -69,7 +62,7 @@
 
         <fileSet>
             <directory>${project.build.directory}</directory>
-            <outputDirectory>log</outputDirectory>
+            <outputDirectory>logs</outputDirectory>
             <fileMode>0644</fileMode>
             <excludes>
                 <exclude>**/*</exclude>
