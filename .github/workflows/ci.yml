@@ -6,6 +6,7 @@ jobs:
         runs-on: ubuntu-latest
         timeout-minutes: 40
         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             SPRING_JPA_SHOW_SQL: false
         steps:
@@ -15,7 +16,7 @@ jobs:
                   java-version: '7.x'
             - name: Package application
               run: |
+                  mkdir ~/.m2
+                  echo "<settings><servers><server><id>github</id><username>OWNER</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
                   chmod +x mvnw
                   ./mvnw -ntp package -DskipTests -e -U
-              with:
-                  repo-token: ${{ secrets.GITHUB_TOKEN }}
