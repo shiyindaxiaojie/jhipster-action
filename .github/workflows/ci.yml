@@ -16,6 +16,6 @@ jobs:
                   java-version: '7.x'
             - name: Package application
               run: |
-                  echo "<settings><servers><server><id>github</id><username>OWNER</username><password>${GITHUB_TOKEN}</password></server></servers><mirror><id>aliyun-central</id><name>aliyun-central</name><url>https://maven.aliyun.com/repository/central</url><mirrorOf>*,!github</mirrorOf></mirror></settings>" > ~/.m2/settings.xml
+                  echo "<settings><servers><server><id>github</id><username>OWNER</username><password>${GITHUB_TOKEN}</password></server></servers><mirrors><mirror><id>aliyun-central</id><name>aliyun-central</name><url>https://maven.aliyun.com/repository/central</url><mirrorOf>*,!github</mirrorOf></mirror></mirrors></settings>" > ~/.m2/settings.xml
                   chmod +x mvnw
                   ./mvnw -ntp package -DskipTests -e -U
