@@ -1,8 +1,8 @@
-name: Application CI
+name: build
 on: [push, pull_request]
 jobs:
     applications:
-        name: Application test suite
+        name: application test suite
         runs-on: ubuntu-latest
         timeout-minutes: 40
         env:
@@ -16,6 +16,6 @@ jobs:
                   java-version: '7.x'
             - name: Package application
               run: |
-                  echo "<settings><servers><server><id>github</id><username>OWNER</username><password>${GITHUB_TOKEN}</password></server></servers><mirrors><mirror><id>aliyun-central</id><name>aliyun-central</name><url>https://maven.aliyun.com/repository/central</url><mirrorOf>*,!github</mirrorOf></mirror></mirrors></settings>" > ~/.m2/settings.xml
+                  echo "<settings><servers><server><id>github</id><username>OWNER</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
                   chmod +x mvnw
                   ./mvnw -ntp package -DskipTests -e -U
