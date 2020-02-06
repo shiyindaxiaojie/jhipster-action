@@ -167,6 +167,9 @@
 		</profile>
 		<profile>
 			<id>undertow</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>org.ylzl</groupId>

@@ -37,6 +37,19 @@
 		</developer>
 	</developers>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/eden-lab/eden-microservice</url>
+		<connection>scm:git:git://github.com/eden-lab/eden-microservice.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/eden-lab/eden-microservice.git</developerConnection>
+	</scm>
+
 	<repositories>
 		<repository>
 			<id>github</id>
@@ -44,136 +57,5 @@
 			<url>https://maven.pkg.github.com/eden-lab/eden-spring-boot</url>
 		</repository>
 	</repositories>
-
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<properties>
-				<spring.profiles.active>dev</spring.profiles.active>
-				<spring.devtools.restart.enabled>true</spring.devtools.restart.enabled>
-				<spring.devtools.livereload.enabled>true</spring.devtools.livereload.enabled>
-			</properties>
-		</profile>
-		<profile>
-			<id>docker</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.spotify</groupId>
-						<artifactId>dockerfile-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>tomcat</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.ylzl</groupId>
-					<artifactId>eden-tomcat-spring-boot-starter</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>undertow</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.ylzl</groupId>
-					<artifactId>eden-undertow-spring-boot-starter</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>jdk8</id>
-			<activation>
-				<jdk>1.8</jdk>
-			</activation>
-			<properties>
-				<java.version>1.8</java.version>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>io.gatling</groupId>
-						<artifactId>gatling-maven-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>io.github.swagger2markup</groupId>
-						<artifactId>swagger2markup-maven-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>net.alchim31.maven</groupId>
-						<artifactId>scala-maven-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.asciidoctor</groupId>
-						<artifactId>asciidoctor-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>logstash</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.ylzl</groupId>
-					<artifactId>eden-logstash-spring-boot-starter</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<spring.profiles.active>prod</spring.profiles.active>
-				<spring.devtools.restart.enabled>false</spring.devtools.restart.enabled>
-				<spring.devtools.livereload.enabled>false</spring.devtools.livereload.enabled>
-			</properties>
-		</profile>
-		<profile>
-			<id>prometheus</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.ylzl</groupId>
-					<artifactId>eden-prometheus-spring-boot-starter</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>sonar</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.sonarsource.scanner.maven</groupId>
-						<artifactId>sonar-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>zipkin</id>
-			<properties>
-				<java.version>1.8</java.version>
-			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.ylzl</groupId>
-					<artifactId>eden-zipkin-spring-boot-starter</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.ylzl</groupId>
-			<artifactId>eden-annotation-processer-spring-boot-starter</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ylzl</groupId>
-			<artifactId>eden-test-spring-boot-starter</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 </project>
