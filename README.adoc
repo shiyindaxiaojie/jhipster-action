@@ -24,7 +24,7 @@ Eden* Spring Microservice 的源码支持在 JDK 1.7 以上的版本编译构建
 CAUTION: 以下情况需要在 JDK 1.8 以上的版本运行：运行 liquibase-maven-plugin 插件执行性能测试；
 使用 swagger2markup-maven-plugin 插件生成接口文档；集成 zipkin 依赖组件。
 
-您可以使用以下命令构建打包：
+您可以使用以下命令构建打包为可执行程序：
 
 [source,shell,indent=0]
 ----
@@ -33,7 +33,14 @@ $ ./mvnw clean package
 
 ----
 
-如果在认证中心启用非对称加密，可以通过 keytool 工具在命令行生成公钥
+构建完成后，在子模块的构建输出目录可以找到后缀名为 jar、zip 或者 tar.gz 的可执行程序。
+
+=== 启动程序
+
+==== 运行环境
+
+1. 认证中心基于关系数据库存储数据，默认使用 MySQL 数据源；
+2. 认证中心默认启用非对称加密，可以通过 keytool 工具在命令行生成公钥
 
 [source,shell,indent=1]
 ----
@@ -42,7 +49,81 @@ keytool -genkey -alias uaa -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore
 
 ----
 
-== 模块清单
+==== 运行顺序
+
+基于模块的依赖关系，请依次按顺序启动程序：
+
+1. eden-registry：注册中心，默认端口为 8761
+2. eden-configserver：配置中心，默认端口为 8888
+3. eden-uaa：认证中心，默认端口为 9999
+4. eden-gateway：网关中心，默认端口为 5555
+
+==== 启动方式
+
+您可以通过以下 4 种方式启动程序：
+
+1. 在 IDE 开发工具直接运行 `org.ylzl.eden.*.Application.java`；
+2. 通过命令行 `java -jar` 启动构建输出的 fat-jar 文件；
+3. 解压构建输出的 zip 或者 tar.gz 文件，在 bin 目录运行 startup 脚本；
+4. 基于 docker-maven-plugin 插件通过 Docker 容器启动。
+
+== 运行界面
+
+=== 登录
+
+image:src/docs/asciidoc/spring-boot-admin-login.png[]
+
+=== 微服务视图
+
+image:src/docs/asciidoc/spring-boot-admin-main-applications.png[]
+
+=== 应用详情
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-details.png[]
+
+=== 实时日志
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-logfile.png[]
+
+=== Metrics
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-metrics.png[]
+
+=== 运行环境
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-environment.png[]
+
+=== 日志控制
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-logging.png[]
+
+=== JMX 管理
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-jmx.png[]
+
+=== 线程监视
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-threads.png[]
+
+=== 请求跟踪
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-trace.png[]
+
+=== Liquibase
+
+image:src/docs/asciidoc/spring-boot-admin-main-applicayions-liquibase.png[]
+
+=== 注册事件
+
+image:src/docs/asciidoc/spring-boot-admin-main-events.png[]
+
+=== 在线接口
+
+image:src/docs/asciidoc/spring-boot-admin-main-apidocs.png[]
+
+== 体系结构
+
+=== 模块清单
 
 |===
 | 应用名称 | 描述 | 技术栈
@@ -64,9 +145,11 @@ keytool -genkey -alias uaa -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore
 | Spring Security OAuth2、Spring Security Jwt
 |===
 
-=== 模块依赖
+=== 开发视图
+
 image:src/docs/staruml/html-docs/diagrams/d5507f74c7649420f3e80c315002ce65.svg[width="600"]
 
 == 许可声明
+
 Eden* Spring Boot 为本人在工作之余开发而成，主要用于学习交流，完全开源免费，遵循
 https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 License]
