@@ -28,7 +28,7 @@
     <parent>
         <groupId>org.ylzl</groupId>
         <artifactId>eden-microservice</artifactId>
-        <version>1.0.0.RELEASE</version>
+        <version>2.0.0.RELEASE</version>
         <relativePath>../</relativePath>
     </parent>
 
@@ -80,16 +80,14 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>docker</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.spotify</groupId>
-						<artifactId>dockerfile-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+				<spring.devtools.restart.enabled>false</spring.devtools.restart.enabled>
+				<spring.devtools.livereload.enabled>false</spring.devtools.livereload.enabled>
+			</properties>
 		</profile>
+
 		<profile>
 			<id>jdk8</id>
 			<activation>
@@ -119,6 +117,18 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>logstash</id>
 			<dependencies>
@@ -127,14 +137,6 @@
 					<artifactId>eden-logstash-spring-boot-starter</artifactId>
 				</dependency>
 			</dependencies>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<spring.profiles.active>prod</spring.profiles.active>
-				<spring.devtools.restart.enabled>false</spring.devtools.restart.enabled>
-				<spring.devtools.livereload.enabled>false</spring.devtools.livereload.enabled>
-			</properties>
 		</profile>
 		<profile>
 			<id>prometheus</id>
@@ -199,32 +201,12 @@
 		</dependency>
         <dependency>
             <groupId>org.ylzl</groupId>
-            <artifactId>eden-cloud-admin-server-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-cloud-config-server-spring-boot-starter</artifactId>
+            <artifactId>eden-cloud-admin-client-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.ylzl</groupId>
             <artifactId>eden-eureka-server-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-feign-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hazelcast-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hystrix-dashboard-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hystrix-spring-boot-starter</artifactId>
-        </dependency>
+		</dependency>
         <dependency>
             <groupId>org.ylzl</groupId>
             <artifactId>eden-jwt-spring-boot-starter</artifactId>
@@ -239,20 +221,6 @@
         </dependency>
         <dependency>
             <groupId>org.ylzl</groupId>
-            <artifactId>eden-ribbon-spring-boot-starter</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>netty-buffer</artifactId>
-					<groupId>io.netty</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>netty-codec</artifactId>
-					<groupId>io.netty</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
             <artifactId>eden-swagger2-spring-boot-starter</artifactId>
         </dependency>
 		<dependency>
@@ -260,18 +228,5 @@
 			<artifactId>eden-test-spring-boot-starter</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-turbine-spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-        </dependency>
     </dependencies>
 </project>

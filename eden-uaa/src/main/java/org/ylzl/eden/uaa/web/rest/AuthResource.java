@@ -28,7 +28,7 @@ import java.security.Principal;
  * 认证资源
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Api(tags = {"认证资源"})
 @Slf4j

@@ -32,7 +32,7 @@ import org.ylzl.eden.spring.boot.data.jpa.id.JpaIdentifierGenerator;
  * 用户领域
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @AllArgsConstructor
 @Data

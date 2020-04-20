@@ -9,7 +9,7 @@ import lombok.Data;
  * 用户数据传输对象
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @ApiModel(description = "用户数据传输对象")
 @AllArgsConstructor

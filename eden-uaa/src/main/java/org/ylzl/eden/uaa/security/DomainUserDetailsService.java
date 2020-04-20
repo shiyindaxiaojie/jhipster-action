@@ -21,7 +21,7 @@ import java.util.List;
  * 用户认证详情服务
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Slf4j
 @Component("userDetailsService")

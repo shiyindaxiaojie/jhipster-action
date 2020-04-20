@@ -9,7 +9,7 @@ import org.ylzl.eden.spring.boot.data.jpa.id.JpaIdentifierGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * 审计事件域对象
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -42,7 +42,7 @@ public class AuditEvent implements PersistentAuditEvent {
     private String principal;
 
     @Column(name = "event_date")
-    private Date eventDate;
+    private Instant eventDate;
 
     @Column(name = "event_type")
     private String eventType;
@@ -64,12 +64,12 @@ public class AuditEvent implements PersistentAuditEvent {
     }
 
     @Override
-    public Date getEventDate() {
+    public Instant getEventDate() {
         return eventDate;
     }
 
     @Override
-    public void setEventDate(Date eventDate) {
+    public void setEventDate(Instant eventDate) {
         this.eventDate = eventDate;
     }
 

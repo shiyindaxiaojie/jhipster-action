@@ -1,0 +1,46 @@
+eden:
+    integration:
+        logstash:
+            enabled: false
+        swagger:
+            default-include-pattern: /(api|oauth)/.*
+            title: #project.description#
+            version: #project.version#
+    security:
+        jwt:
+            authentication:
+                base64-secret: MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzMyMTIzMmYyOTdhNTdhNWE3NDM4OTRhMGU0YTgwMWZjMw==
+        oauth2:
+            authorization:
+                access-token-uri: http://uaa/oauth/token
+                access-token-uri-service-id: uaa
+                client-credentials:
+                    client-id: client
+                    client-secret: client
+                password:
+                    client-id: password
+                    client-secret: password
+                public-token-key-uri: http://uaa/oauth/token_key
+                public-token-key-uri-service-id: uaa
+
+eureka:
+    client:
+        instance-info-replication-interval-seconds: 10
+        metadata:
+            user.name: ${spring.security.user.name}
+            user.password: ${spring.security.user.password}
+        registry-fetch-interval-seconds: 10
+    instance:
+        lease-renewal-interval-in-seconds: 5
+        lease-expiration-duration-in-seconds: 10
+
+logging:
+    file:
+        name: target/${spring.application.name}.log
+    level:
+        ROOT: INFO
+        org.ylzl.eden: DEBUG
+
+server:
+    port: 8090
+

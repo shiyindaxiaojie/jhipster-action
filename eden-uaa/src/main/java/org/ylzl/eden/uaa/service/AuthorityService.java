@@ -23,7 +23,7 @@ import org.ylzl.eden.uaa.domain.Authority;
  * 权限业务接口
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 public interface AuthorityService extends JpaService<Authority, Long> {
 

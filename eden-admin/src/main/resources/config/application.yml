@@ -1,0 +1,81 @@
+eden:
+    security:
+        jwt:
+            authorization:
+                server:
+                    enabled: true
+        oauth2:
+            authorization:
+                client:
+                    enabled: true
+
+eureka:
+    client:
+        enabled: true
+        fetch-registry: true
+        healthcheck:
+            enabled: true
+        register-with-eureka: true
+    instance:
+        appname: ${spring.application.name}
+        health-check-url-path: ${management.endpoints.web.base-path}/health
+        home-page-url-path:
+        instanceId: ${spring.application.name}.${spring.application.instance-id:${random.value}}
+        metadata-map:
+            instanceId: ${eureka.instance.instanceId}
+            profile: ${spring.profiles.active}
+            version: #project.version#
+            zone: primary
+        prefer-ip-address: true
+        status-page-url-path: ${management.endpoints.web.base-path}/info
+
+feign:
+    hystrix:
+        enabled: true
+
+management:
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+                include: "*"
+    endpoint:
+        health:
+            show-details: ALWAYS
+    health:
+        mail:
+            enabled: false
+    metrics:
+        enable:
+            http: true
+            jvm: true
+            logback: true
+            process: true
+            system: true
+        distribution:
+            percentiles-histogram:
+                all: true
+            percentiles:
+                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+
+ribbon:
+    eureka:
+        enabled: true
+
+spring:
+    application:
+        name: #project.name#
+    boot:
+        admin:
+            context-path: /admin
+            ui:
+                title: 微服务监控
+    jmx:
+        default-domain: ${spring.application.name}
+    profiles:
+        active: #spring.profiles.active#
+        include: #spring.profiles.include#
+
+zuul:
+    prefix: /services
+    strip-prefix: true

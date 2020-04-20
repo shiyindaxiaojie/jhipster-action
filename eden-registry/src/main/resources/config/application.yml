@@ -4,10 +4,6 @@ eden:
             authorization:
                 server:
                     enabled: true
-        oauth2:
-            authorization:
-                client:
-                    enabled: true
 
 eureka:
     client:
@@ -16,82 +12,54 @@ eureka:
         register-with-eureka: false
     dashboard:
         path: /
-    datacenter: DataCenter
-    environment: Environment
     instance:
         appname: ${spring.application.name}
-        health-check-url-path: ${server.context-path}${management.context-path}/health
+        health-check-url-path: ${management.endpoints.web.base-path}/health
         instanceId: ${spring.application.name}:${spring.application.instance-id:${random.value}}
         metadata-map:
             instanceId: ${eureka.instance.instanceId}
-            management:
-                context-path: ${server.context-path}${management.context-path}
             version: #project.version#
             zone: primary
         prefer-ip-address: true
-        status-page-url-path: ${server.context-path}${management.context-path}/info
+        status-page-url-path: ${management.endpoints.web.base-path}/info
     server:
         enable-self-preservation: false
         peer-node-read-timeout-ms: 20000
 
-hystrix:
-    command:
-        default:
-            execution:
-                isolation:
-                    thread:
-                        timeoutInMilliseconds: 5000
-
-javamelody:
-    init-parameters:
-        url-exclude-pattern: (/webjars/.*)
-
 management:
-    context-path: /management
-
-ribbon:
-    eureka:
-        enabled: true
-    ReadTimeout: 5000
-    ConnectTimeout: 5000
-
-server:
-    context-path:
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+                include: "*"
+    endpoint:
+        health:
+            show-details: ALWAYS
+    health:
+        mail:
+            enabled: false
+    metrics:
+        enable:
+            http: true
+            jvm: true
+            logback: true
+            process: true
+            system: true
+        distribution:
+            percentiles-histogram:
+                all: true
+            percentiles:
+                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
 
 spring:
     application:
         name: #project.name#
-    boot:
-        admin:
-            client:
-                prefer-ip: true
-            context-path: /admin
-            routes:
-                endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,activiti
-            turbine:
-                location: ${spring.application.name}
-    devtools:
-        restart:
-            enabled: #spring.devtools.restart.enabled#
-        livereload:
-            enabled: #spring.devtools.livereload.enabled#
     freemarker:
         prefer-file-system-access: false
     jmx:
         default-domain: ${spring.application.name}
-    mvc:
-        favicon:
-            enabled: false
     profiles:
         active: #spring.profiles.active#
         include: #spring.profiles.include#
     thymeleaf:
         enabled: false
-    zipkin:
-        locator:
-            discovery:
-                enabled: true
-
-zuul:
-    prefix: /services
-    strip-prefix: true

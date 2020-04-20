@@ -8,7 +8,7 @@ import org.ylzl.eden.uaa.domain.Authority;
  * 权限数据仓库
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {

@@ -1,7 +1,7 @@
 version: '3'
 services:
     registry:
-        image: eden/registry:1.0.0.RELEASE
+        image: eden/registry:2.0.0.RELEASE
         volumes:
             - ./central-server-config:/central-config
         environment:

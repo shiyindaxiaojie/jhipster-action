@@ -1,0 +1,22 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@localhost:8762/eureka/
+
+spring:
+    cloud:
+        config:
+            discovery:
+                enabled: true
+                serviceId: configserver
+            fail-fast: false
+            label: master
+            name: ${spring.application.name}
+            password: ${spring.security.user.password}
+            profile: ${spring.profiles.active}
+            username: ${spring.security.user.name}
+    security:
+        user:
+            name: admin
+            password: admin
+            roles: ADMIN

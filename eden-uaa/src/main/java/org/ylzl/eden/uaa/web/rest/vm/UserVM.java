@@ -11,7 +11,7 @@ import org.ylzl.eden.uaa.domain.User;
  * 用户视图模型
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @ApiModel(description = "用户视图模型")
 @AllArgsConstructor

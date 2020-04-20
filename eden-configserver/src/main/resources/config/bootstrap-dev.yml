@@ -1,8 +1,5 @@
 spring:
     cloud:
-        bus:
-            refresh:
-                enabled: true
         config:
             profile: ${spring.profiles.active}
     rabbitmq:

@@ -1,7 +1,7 @@
 eureka:
     client:
         service-url:
-            defaultZone: http://${security.user.name}:${security.user.password}@localhost:8761/eureka/,http://${security.user.name}:${security.user.password}@localhost:8762/eureka/
+            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@localhost:8762/eureka/
 
 security:
     user:
@@ -20,9 +20,9 @@ spring:
             fail-fast: false
             label: master
             name: ${spring.application.name}
-            password: ${security.user.password}
+            password: ${spring.security.user.password}
             profile: ${spring.profiles.active}
-            username: ${security.user.name}
+            username: ${spring.security.user.name}
     rabbitmq:
         host: localhost
         port: 5672

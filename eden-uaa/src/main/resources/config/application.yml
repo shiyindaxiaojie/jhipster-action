@@ -17,22 +17,16 @@ eureka:
         register-with-eureka: true
     instance:
         appname: ${spring.application.name}
-        health-check-url-path: ${server.context-path}${management.context-path}/health
-        home-page-url-path: ${server.context-path}
+        health-check-url-path: ${management.endpoints.web.base-path}/health
+        home-page-url-path:
         instanceId: ${spring.application.name}.${spring.application.instance-id:${random.value}}
         metadata-map:
             instanceId: ${eureka.instance.instanceId}
-            management:
-                context-path: ${server.context-path}${management.context-path}
             profile: ${spring.profiles.active}
             version: #project.version#
             zone: primary
         prefer-ip-address: true
-        status-page-url-path: ${server.context-path}${management.context-path}/info
-
-feign:
-    hystrix:
-        enabled: true
+        status-page-url-path: ${management.endpoints.web.base-path}/info
 
 hystrix:
     command:
@@ -40,16 +34,11 @@ hystrix:
             execution:
                 isolation:
                     thread:
-                        timeoutInMilliseconds: 5000
-
-management:
-    context-path: /management
+                        timeout-in-milliseconds: 5000
 
 ribbon:
     eureka:
         enabled: true
-    ReadTimeout: 5000
-    ConnectTimeout: 5000
 
 security:
     oauth2:
@@ -57,7 +46,6 @@ security:
             filter-order: 3
 
 server:
-    context-path:
     servlet:
         session:
             cookie:
@@ -66,10 +54,6 @@ server:
 spring:
     application:
         name: #project.name#
-    boot:
-        admin:
-            client:
-                prefer-ip: true
     jackson:
         date-format: yyyy-MM-dd HH:mm:ss
         serialization:
@@ -98,13 +82,6 @@ spring:
                     new_generator_mappings: true
                 region:
                     factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
-    mvc:
-        favicon:
-            enabled: false
     profiles:
         active: #spring.profiles.active#
         include: #spring.profiles.include#
-    zipkin:
-        locator:
-            discovery:
-                enabled: true

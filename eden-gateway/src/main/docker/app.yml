@@ -3,7 +3,7 @@ services:
     uaa-app:
         image: uaa
         environment:
-            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://$${eden.security.user.username}:$${eden.security.user.password}@uaa-registry:8761/eureka
+            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://$${eden.spring.security.user.username}:$${eden.spring.security.user.password}@uaa-registry:8761/eureka
             - JAVA_OPTIONS=-Xmx512m -Xms256m
             - RUN_SLEEP=30
             - SPRING_PROFILES_ACTIVE=prod

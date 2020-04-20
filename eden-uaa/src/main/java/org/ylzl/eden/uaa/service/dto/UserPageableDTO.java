@@ -14,7 +14,7 @@ import java.util.Date;
  * 用户分页数据传输对象
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @ApiModel(description = "用户分页数据传输对象")
 @AllArgsConstructor

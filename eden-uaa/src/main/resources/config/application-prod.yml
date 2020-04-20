@@ -29,8 +29,8 @@ eureka:
         instance-info-replication-interval-seconds: 10
         metadata:
             user:
-                name: ${eden.security.user.name}
-                password: ${eden.security.user.password}
+                name: ${eden.spring.security.user.name}
+                password: ${eden.spring.security.user.password}
         registry-fetch-interval-seconds: 10
     instance:
         lease-renewal-interval-in-seconds: 5
@@ -46,7 +46,7 @@ security:
     user:
         name: admin
         password: 21232f297a57a5a743894a0e4a801fc3
-        roles: ROLE_ADMIN
+        roles: ADMIN
 
 server:
     compression:

@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  * 帐号资源
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Api(tags = {"帐号资源"})
 @Slf4j

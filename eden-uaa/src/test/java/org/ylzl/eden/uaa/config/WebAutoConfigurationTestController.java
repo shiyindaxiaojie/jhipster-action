@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Web 自动配置测试控制器
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @RestController
 public class WebAutoConfigurationTestController {

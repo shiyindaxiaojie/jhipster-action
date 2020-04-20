@@ -9,7 +9,7 @@ spring:
             server:
                 bootstrap: true
                 native:
-                    search-locations: classpath:/central-config
+                    search-locations: file:./central-config
                 prefix: /config
             fail-fast: true
             name: #project.name#

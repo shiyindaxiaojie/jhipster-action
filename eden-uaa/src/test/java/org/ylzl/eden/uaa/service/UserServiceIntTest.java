@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
  * 用户业务实现集成测试
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @SpringBootTest(classes = Application.class)
 public class UserServiceIntTest {

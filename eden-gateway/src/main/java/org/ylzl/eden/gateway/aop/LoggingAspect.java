@@ -30,7 +30,7 @@ import org.ylzl.eden.spring.boot.support.aop.LoggingAspectAdapter;
  * 日志切面
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Slf4j
 @Aspect
@@ -42,7 +42,8 @@ public class LoggingAspect extends LoggingAspectAdapter {
 		" || within(@org.springframework.web.bind.annotation.RestController *)")
 	public void springBeanPointcut() {}
 
-	@Pointcut("within(org.ylzl.eden.gateway.service..*)")
+	@Pointcut("within(org.ylzl.eden.gateway.service..*)" +
+		" || within(org.ylzl.eden.gateway.scheduling..*)")
 	public void applicationPackagePointcut() {}
 
 	@AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")

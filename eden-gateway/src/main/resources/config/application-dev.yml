@@ -3,7 +3,7 @@ eden:
         logstash:
             enabled: false
         swagger:
-            default-include-pattern: /(api|oauth|${management.context-path})/.*
+            default-include-pattern: /(api|oauth|${management.endpoints.web.base-path})/.*
             title: #project.description#
             version: #project.version#
     security:
@@ -25,8 +25,8 @@ eureka:
         instance-info-replication-interval-seconds: 10
         metadata:
             user:
-                name: ${security.user.name}
-                password: ${security.user.password}
+                name: ${spring.security.user.name}
+                password: ${spring.security.user.password}
         registry-fetch-interval-seconds: 10
     instance:
         lease-renewal-interval-in-seconds: 5
@@ -38,16 +38,15 @@ logging:
         ROOT: INFO
         org.ylzl.eden: DEBUG
 
-security:
-    user:
-        name: admin
-        password: 21232f297a57a5a743894a0e4a801fc3
-        roles: ROLE_ADMIN
-
 server:
     port: 8080
 
 spring:
+    security:
+        user:
+            name: admin
+            password: 21232f297a57a5a743894a0e4a801fc3
+            roles: ADMIN
     zipkin:
         base-url: http://localhost:9411
         enabled: false

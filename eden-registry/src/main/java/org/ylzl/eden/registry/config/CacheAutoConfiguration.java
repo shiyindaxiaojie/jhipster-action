@@ -17,32 +17,15 @@
 
 package org.ylzl.eden.registry.config;
 
-import com.hazelcast.config.Config;
-import com.hazelcast.config.EvictionPolicy;
-import com.hazelcast.config.ListConfig;
-import com.hazelcast.config.MapConfig;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * 缓存自动配置
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Configuration
 public class CacheAutoConfiguration {
 
-    private static final String HAZELCASE_JMX = "hazelcast.jmx";
-
-    private static final String ADMIN_APPLICATION_STORE = "spring-boot-admin-application-store";
-
-    private static final String ADMIN_EVENT_STORE = "spring-boot-admin-event-store";
-
-    @Bean
-    public Config hazelcastConfig() {
-        return new Config().setProperty(HAZELCASE_JMX, "true")
-			.addMapConfig(new MapConfig(ADMIN_APPLICATION_STORE).setBackupCount(1).setEvictionPolicy(EvictionPolicy.LRU))
-			.addListConfig(new ListConfig(ADMIN_EVENT_STORE).setBackupCount(1).setMaxSize(1000));
-    }
 }

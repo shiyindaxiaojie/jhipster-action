@@ -2,7 +2,7 @@ package org.ylzl.eden.uaa.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +23,7 @@ import java.util.List;
  * 安全自动配置
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Slf4j
 @Configuration
@@ -42,7 +42,7 @@ public class SecurityAutoConfiguration {
 		public OAuth2SecurityAutoConfiguration(TokenStore tokenStore, ManagementServerProperties managementServerProperties) {
 			super(tokenStore);
 			this.tokenStore = tokenStore;
-			this.managementServerContextPath = managementServerProperties.getContextPath();
+			this.managementServerContextPath = managementServerProperties.getServlet().getContextPath();
 		}
 
 		@Override

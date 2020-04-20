@@ -14,30 +14,30 @@ eureka:
         register-with-eureka: true
     instance:
         appname: ${spring.application.name}
-        health-check-url-path: ${server.context-path}${management.context-path}/health
-        home-page-url-path: ${server.context-path}
+        health-check-url-path: ${management.endpoints.web.base-path}/health
+        home-page-url-path:
         instanceId: ${spring.application.name}.${spring.application.instance-id:${random.value}}
         metadata-map:
             instanceId: ${eureka.instance.instanceId}
-            management:
-                context-path: ${server.context-path}${management.context-path}
             profile: ${spring.profiles.active}
             version: #project.version#
             zone: primary
         prefer-ip-address: true
-        status-page-url-path: ${server.context-path}${management.context-path}/info
+        status-page-url-path: ${management.endpoints.web.base-path}/info
 
 management:
-    context-path: /management
-
-security:
-    oauth2:
-        resource:
-            filter-order: 3
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+                include: "*"
+    endpoint:
+        health:
+            show-details: ALWAYS
 
 server:
-    context-path:
     servlet:
+        context-path:
         session:
             cookie:
                 http-only: true
@@ -45,10 +45,6 @@ server:
 spring:
     application:
         name: #project.name#
-    boot:
-        admin:
-            client:
-                prefer-ip: true
     jackson:
         date-format: yyyy-MM-dd HH:mm:ss
         serialization:
@@ -56,13 +52,6 @@ spring:
         time-zone: GMT+8
     jmx:
         default-domain: ${spring.application.name}
-    mvc:
-        favicon:
-            enabled: false
     profiles:
         active: #spring.profiles.active#
         include: #spring.profiles.include#
-    zipkin:
-        locator:
-            discovery:
-                enabled: true

@@ -20,6 +20,7 @@ package org.ylzl.eden.registry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
 import org.springframework.core.env.Environment;
 import org.ylzl.eden.spring.boot.support.SpringBootApplicationAdapter;
 
@@ -27,7 +28,7 @@ import org.ylzl.eden.spring.boot.support.SpringBootApplicationAdapter;
  * Spring Boot 引导类
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Slf4j
 @SpringBootApplication
