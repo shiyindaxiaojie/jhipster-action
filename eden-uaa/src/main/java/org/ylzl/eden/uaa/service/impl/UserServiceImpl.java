@@ -123,6 +123,33 @@ public class UserServiceImpl extends JpaServiceImpl<User, Long> implements UserS
         return user;
     }
 
+    @Transactional
+    @Override
+    public User update(UserDTO userDTO) {
+        User existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+        if (existingUser != null && (!existingUser.getId().equals(userDTO.getId()))) {
+            throw new EmailAlreadyUsedException();
+        }
+
+        existingUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase());
+        if (existingUser != null && (!existingUser.getId().equals(userDTO.getId()))) {
+            throw new LoginAlreadyUsedException();
+        }
+
+        User user = userRepository.findOne(userDTO.getId());
+        if (user == null) {
+            log.warn("用户主键无效：{}", userDTO.getId());
+            throw new EntityNotFoundException();
+        }
+        this.clearUserCaches(user);
+        user = UserMapstruct.INSTANCE.userDTOToUser(userDTO);
+        Set<Authority> managedAuthorities = user.getAuthorities();
+        managedAuthorities.clear();
+        this.updateAuthorities(userDTO.getAuthorities(), managedAuthorities);
+        log.debug("修改用户成功：{}", user);
+        return user;
+    }
+
 	@Transactional
     @Override
     public void deleteNotActivatedUsers() {
@@ -273,42 +300,15 @@ public class UserServiceImpl extends JpaServiceImpl<User, Long> implements UserS
         return user;
     }
 
-    @Transactional
-    @Override
-    public User update(UserDTO userDTO) {
-        User existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
-        if (existingUser != null && (!existingUser.getId().equals(userDTO.getId()))) {
-            throw new EmailAlreadyUsedException();
-        }
-
-        existingUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase());
-        if (existingUser != null && (!existingUser.getId().equals(userDTO.getId()))) {
-            throw new LoginAlreadyUsedException();
-        }
-
-        User user = userRepository.findOne(userDTO.getId());
-        if (user == null) {
-            log.warn("用户主键无效：{}", userDTO.getId());
-            throw new EntityNotFoundException();
-        }
-        this.clearUserCaches(user);
-        user = UserMapstruct.INSTANCE.userDTOToUser(userDTO);
-        Set<Authority> managedAuthorities = user.getAuthorities();
-        managedAuthorities.clear();
-        this.updateAuthorities(userDTO.getAuthorities(), managedAuthorities);
-        log.debug("修改用户成功：{}", user);
-        return user;
-    }
-
     @Override
     public String generatePasswordResetLink(String resetKey) {
         String baseUrl = enhancedMailProperties.getBaseUrl();
         return baseUrl + "/#/password-reset/finish?key=" + resetKey;
     }
 
-    private void updateAuthorities(Set<Authority> authoritieDTOs, Set<Authority> managedAuthorities) {
+    private void updateAuthorities(Set<Authority> authorityDTOs, Set<Authority> managedAuthorities) {
         Authority authority;
-        for (Authority authorityDTO : authoritieDTOs) {
+        for (Authority authorityDTO : authorityDTOs) {
             authority = authorityService.findOne(authorityDTO.getId());
             if (authority == null) {
                 log.warn("存在无效的权限主键：{}", authorityDTO.getId());

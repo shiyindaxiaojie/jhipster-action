@@ -17,7 +17,7 @@ public final class ApplicationConstants {
     public static final String BASE_PACKAGE = "org.ylzl.eden.uaa";
 
     /**
-     * 数据仓库包路径
+     * JPA 包路径
      */
     public static final String JPA_PACKAGE = BASE_PACKAGE + ".repository";
 }

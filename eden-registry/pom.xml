@@ -80,16 +80,14 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>docker</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.spotify</groupId>
-						<artifactId>dockerfile-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+				<spring.devtools.restart.enabled>false</spring.devtools.restart.enabled>
+				<spring.devtools.livereload.enabled>false</spring.devtools.livereload.enabled>
+			</properties>
 		</profile>
+
 		<profile>
 			<id>jdk8</id>
 			<activation>
@@ -119,6 +117,18 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>logstash</id>
 			<dependencies>
@@ -127,14 +137,6 @@
 					<artifactId>eden-logstash-spring-boot-starter</artifactId>
 				</dependency>
 			</dependencies>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<spring.profiles.active>prod</spring.profiles.active>
-				<spring.devtools.restart.enabled>false</spring.devtools.restart.enabled>
-				<spring.devtools.livereload.enabled>false</spring.devtools.livereload.enabled>
-			</properties>
 		</profile>
 		<profile>
 			<id>prometheus</id>
