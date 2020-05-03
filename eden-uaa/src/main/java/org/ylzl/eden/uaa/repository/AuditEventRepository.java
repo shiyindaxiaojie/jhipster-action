@@ -11,6 +11,4 @@ import org.ylzl.eden.uaa.domain.AuditEvent;
  * @since 0.0.1
  */
 @Repository
-public interface AuditEventRepository extends PersistenceAuditEventRepository<AuditEvent, Long> {
-
-}
+public interface AuditEventRepository extends PersistenceAuditEventRepository<AuditEvent, Long> {}

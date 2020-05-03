@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-    <artifactId>eden-uaa</artifactId>
-    <name>uaa</name>
-    <description>认证中心</description>
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
+	<artifactId>eden-uaa</artifactId>
+	<name>uaa</name>
+	<description>认证中心</description>
 
-    <parent>
-        <groupId>org.ylzl</groupId>
-        <artifactId>eden-microservice</artifactId>
-        <version>1.0.0.RELEASE</version>
-        <relativePath>../</relativePath>
-    </parent>
+	<parent>
+		<groupId>org.ylzl</groupId>
+		<artifactId>eden-microservice</artifactId>
+		<version>1.0.0.RELEASE</version>
+		<relativePath>../</relativePath>
+	</parent>
 
-    <properties>
-        <server.url>http://localhost:9999</server.url>
+	<properties>
+		<server.url>http://localhost:9999</server.url>
 		<start-class>org.ylzl.eden.uaa.Application</start-class>
-    </properties>
+	</properties>
 
 	<build>
 		<plugins>
@@ -249,7 +249,7 @@
 		</profile>
 	</profiles>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-annotation-processer-spring-boot-starter</artifactId>
@@ -259,51 +259,51 @@
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-cloud-admin-client-spring-boot-starter</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-cloud-config-client-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-eureka-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hazelcast-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hibernate-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hikaricp-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-jpa-spring-boot-starter</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-cloud-config-client-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-eureka-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-hazelcast-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-hibernate-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-hikaricp-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-jpa-spring-boot-starter</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-liquibase-spring-boot-starter</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-metrics-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-oauth2-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-swagger2-spring-boot-starter</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-metrics-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-oauth2-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-swagger2-spring-boot-starter</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-test-spring-boot-starter</artifactId>
 			<scope>test</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 </project>

@@ -22,22 +22,22 @@ import java.util.Date;
 @Data
 public class UserPageableDTO extends PageableDTO {
 
-    @ApiModelProperty(value = "账号")
-    private String login;
+  @ApiModelProperty(value = "账号")
+  private String login;
 
-    @ApiModelProperty(value = "创建时间（开始）")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date createdDateStart;
+  @ApiModelProperty(value = "创建时间（开始）")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date createdDateStart;
 
-    @ApiModelProperty(value = "创建时间（结束）")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date createdDateEnd;
+  @ApiModelProperty(value = "创建时间（结束）")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date createdDateEnd;
 
-    @ApiModelProperty(value = "最后修改时间（开始）")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date lastModifiedDateStart;
+  @ApiModelProperty(value = "最后修改时间（开始）")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date lastModifiedDateStart;
 
-    @ApiModelProperty(value = "最后修改时间（结束）")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date lastModifiedDateEnd;
+  @ApiModelProperty(value = "最后修改时间（结束）")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date lastModifiedDateEnd;
 }

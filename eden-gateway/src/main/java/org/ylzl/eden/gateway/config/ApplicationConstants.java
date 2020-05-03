@@ -9,6 +9,4 @@ import lombok.experimental.UtilityClass;
  * @since 0.0.1
  */
 @UtilityClass
-public final class ApplicationConstants {
-
-}
+public final class ApplicationConstants {}

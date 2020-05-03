@@ -18,7 +18,6 @@ package org.ylzl.eden.uaa.web.rest;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,8 +35,8 @@ import java.security.Principal;
 @RestController
 public class AuthResource {
 
-    @RequestMapping("/users")
-    public Principal user(Principal principal) {
-        return principal;
-    }
+  @RequestMapping("/users")
+  public Principal user(Principal principal) {
+    return principal;
+  }
 }

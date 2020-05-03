@@ -13,11 +13,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application")
 public class ApplicationProperties {
 
-	private final User user = new User();
+  private final User user = new User();
 
-	@Data
-	public class User {
+  @Data
+  public class User {
 
-		private Integer removeNotActivatedAmount;
-	}
+    private Integer removeNotActivatedAmount;
+  }
 }

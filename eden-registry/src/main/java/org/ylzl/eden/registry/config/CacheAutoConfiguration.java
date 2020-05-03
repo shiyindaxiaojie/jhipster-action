@@ -33,16 +33,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CacheAutoConfiguration {
 
-    private static final String HAZELCASE_JMX = "hazelcast.jmx";
+  private static final String HAZELCASE_JMX = "hazelcast.jmx";
 
-    private static final String ADMIN_APPLICATION_STORE = "spring-boot-admin-application-store";
+  private static final String ADMIN_APPLICATION_STORE = "spring-boot-admin-application-store";
 
-    private static final String ADMIN_EVENT_STORE = "spring-boot-admin-event-store";
+  private static final String ADMIN_EVENT_STORE = "spring-boot-admin-event-store";
 
-    @Bean
-    public Config hazelcastConfig() {
-        return new Config().setProperty(HAZELCASE_JMX, "true")
-			.addMapConfig(new MapConfig(ADMIN_APPLICATION_STORE).setBackupCount(1).setEvictionPolicy(EvictionPolicy.LRU))
-			.addListConfig(new ListConfig(ADMIN_EVENT_STORE).setBackupCount(1).setMaxSize(1000));
-    }
+  @Bean
+  public Config hazelcastConfig() {
+    return new Config()
+        .setProperty(HAZELCASE_JMX, "true")
+        .addMapConfig(
+            new MapConfig(ADMIN_APPLICATION_STORE)
+                .setBackupCount(1)
+                .setEvictionPolicy(EvictionPolicy.LRU))
+        .addListConfig(new ListConfig(ADMIN_EVENT_STORE).setBackupCount(1).setMaxSize(1000));
+  }
 }

@@ -26,19 +26,23 @@ import java.util.List;
 @Configuration
 public class WebAutoConfiguration extends WebConfigurerAdapter {
 
-	public WebAutoConfiguration(FrameworkProperties frameworkProperties, Environment environment) {
-		super(frameworkProperties, environment);
-	}
+  public WebAutoConfiguration(FrameworkProperties frameworkProperties, Environment environment) {
+    super(frameworkProperties, environment);
+  }
 
-	@Bean
-	public CorsFilter corsFilter(FrameworkProperties frameworkProperties, ManagementServerProperties managementServerProperties) {
-		CorsConfiguration corsConfiguration = frameworkProperties.getCors();
-		List<String> paths = new ArrayList<>();
-		if (corsConfiguration.getAllowedOrigins() != null && !corsConfiguration.getAllowedOrigins().isEmpty()) {
-			paths.add("/api" + PathMatcherConstants.ALL_CHILD_PATTERN);
-			paths.add(managementServerProperties.getContextPath() + PathMatcherConstants.ALL_CHILD_PATTERN);
-			paths.add(SwaggerConstants.DEFAULT_URL);
-		}
-		return CorsFilterBuilder.builder().corsConfiguration(corsConfiguration).paths(paths).build();
-	}
+  @Bean
+  public CorsFilter corsFilter(
+      FrameworkProperties frameworkProperties,
+      ManagementServerProperties managementServerProperties) {
+    CorsConfiguration corsConfiguration = frameworkProperties.getCors();
+    List<String> paths = new ArrayList<>();
+    if (corsConfiguration.getAllowedOrigins() != null
+        && !corsConfiguration.getAllowedOrigins().isEmpty()) {
+      paths.add("/api" + PathMatcherConstants.ALL_CHILD_PATTERN);
+      paths.add(
+          managementServerProperties.getContextPath() + PathMatcherConstants.ALL_CHILD_PATTERN);
+      paths.add(SwaggerConstants.DEFAULT_URL);
+    }
+    return CorsFilterBuilder.builder().corsConfiguration(corsConfiguration).paths(paths).build();
+  }
 }

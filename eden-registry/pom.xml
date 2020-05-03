@@ -17,25 +17,25 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>eden-registry</artifactId>
-    <packaging>jar</packaging>
-    <name>registry</name>
-    <description>注册中心</description>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>eden-registry</artifactId>
+	<packaging>jar</packaging>
+	<name>registry</name>
+	<description>注册中心</description>
 
-    <parent>
-        <groupId>org.ylzl</groupId>
-        <artifactId>eden-microservice</artifactId>
-        <version>1.0.0.RELEASE</version>
-        <relativePath>../</relativePath>
-    </parent>
+	<parent>
+		<groupId>org.ylzl</groupId>
+		<artifactId>eden-microservice</artifactId>
+		<version>1.0.0.RELEASE</version>
+		<relativePath>../</relativePath>
+	</parent>
 
-    <properties>
-        <server.url>http://localhost:8761</server.url>
+	<properties>
+		<server.url>http://localhost:8761</server.url>
 		<start-class>org.ylzl.eden.registry.Application</start-class>
-    </properties>
+	</properties>
 
 	<build>
 		<plugins>
@@ -193,55 +193,55 @@
 		</profile>
 	</profiles>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-annotation-processer-spring-boot-starter</artifactId>
 			<scope>provided</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-cloud-admin-server-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-cloud-config-server-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-eureka-server-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-feign-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hazelcast-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hystrix-dashboard-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-hystrix-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-jwt-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-metrics-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-oauth2-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-ribbon-spring-boot-starter</artifactId>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-cloud-admin-server-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-cloud-config-server-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-eureka-server-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-feign-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-hazelcast-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-hystrix-dashboard-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-hystrix-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-jwt-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-metrics-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-oauth2-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-ribbon-spring-boot-starter</artifactId>
 			<exclusions>
 				<exclusion>
 					<artifactId>netty-buffer</artifactId>
@@ -253,27 +253,27 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-swagger2-spring-boot-starter</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-swagger2-spring-boot-starter</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-test-spring-boot-starter</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-turbine-spring-boot-starter</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-turbine-spring-boot-starter</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+		</dependency>
+	</dependencies>
 </project>

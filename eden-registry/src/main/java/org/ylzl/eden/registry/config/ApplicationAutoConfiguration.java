@@ -55,20 +55,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationAutoConfiguration {
 
-	@AutoConfigureBefore({RevereseZuulProxyConfiguration.class})
-	@Slf4j
-	@Configuration
-	public static class FixedZuulProxyAutoConfiguration extends ZuulProxyConfiguration {
+  @AutoConfigureBefore({RevereseZuulProxyConfiguration.class})
+  @Slf4j
+  @Configuration
+  public static class FixedZuulProxyAutoConfiguration extends ZuulProxyConfiguration {
 
-		/**
-		 * FIXME 在 RevereseZuulProxyConfiguration 之前装配服务注册路由，否则默认的 routes 路由配置会被 Spring Boot Admin 覆盖
-		 *
-		 * @see de.codecentric.boot.admin.config.RevereseZuulProxyConfiguration
-		 * @return DiscoveryClientRouteLocator
-		 */
-		@Bean
-		public DiscoveryClientRouteLocator discoveryClientRouteLocator(DiscoveryClient discoveryClient, ServiceRouteMapper serviceRouteMapper) {
-			return new DiscoveryClientRouteLocator(this.server.getServletPrefix(), discoveryClient, this.zuulProperties, serviceRouteMapper);
-		}
-	}
+    /**
+     * FIXME 在 RevereseZuulProxyConfiguration 之前装配服务注册路由，否则默认的 routes 路由配置会被 Spring Boot Admin 覆盖
+     *
+     * @see de.codecentric.boot.admin.config.RevereseZuulProxyConfiguration
+     * @return DiscoveryClientRouteLocator
+     */
+    @Bean
+    public DiscoveryClientRouteLocator discoveryClientRouteLocator(
+        DiscoveryClient discoveryClient, ServiceRouteMapper serviceRouteMapper) {
+      return new DiscoveryClientRouteLocator(
+          this.server.getServletPrefix(), discoveryClient, this.zuulProperties, serviceRouteMapper);
+    }
+  }
 }

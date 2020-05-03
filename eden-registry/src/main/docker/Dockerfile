@@ -11,7 +11,7 @@ ADD entrypoint.sh entrypoint.sh
 RUN chmod 755 entrypoint.sh && chown eden:eden entrypoint.sh
 USER eden
 
-ADD *.jar app.jar
+ADD .jar app.jar
 
 ENTRYPOINT ["./entrypoint.sh"]
 

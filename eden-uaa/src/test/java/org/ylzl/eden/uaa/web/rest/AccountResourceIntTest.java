@@ -30,7 +30,4 @@ import org.ylzl.eden.uaa.Application;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class AccountResourceIntTest {
-
-
-}
+public class AccountResourceIntTest {}

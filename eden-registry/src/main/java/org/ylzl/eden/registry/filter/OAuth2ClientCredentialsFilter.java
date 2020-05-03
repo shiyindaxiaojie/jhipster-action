@@ -40,57 +40,75 @@ import org.ylzl.eden.spring.boot.security.oauth2.token.store.ClientCredentialsTo
 @Slf4j
 public class OAuth2ClientCredentialsFilter extends ZuulFilter {
 
-	private final ClientCredentialsTokenHolder clientCredentialsTokenHolder;
+  private final ClientCredentialsTokenHolder clientCredentialsTokenHolder;
 
-    private final ZuulProperties zuulProperties;
+  private final ZuulProperties zuulProperties;
 
-	private final AdminServerProperties adminServerProperties;
+  private final AdminServerProperties adminServerProperties;
 
-	private final OAuth2Properties oAuth2Properties;
+  private final OAuth2Properties oAuth2Properties;
 
-    private final PathMatcher pathMatcher;
+  private final PathMatcher pathMatcher;
 
-	public OAuth2ClientCredentialsFilter(ClientCredentialsTokenHolder clientCredentialsTokenHolder, ZuulProperties zuulProperties,
-										 AdminServerProperties adminServerProperties, OAuth2Properties oAuth2Properties, PathMatcher pathMatcher) {
-		this.clientCredentialsTokenHolder = clientCredentialsTokenHolder;
-		this.zuulProperties = zuulProperties;
-		this.adminServerProperties = adminServerProperties;
-		this.oAuth2Properties = oAuth2Properties;
-		this.pathMatcher = pathMatcher;
-	}
+  public OAuth2ClientCredentialsFilter(
+      ClientCredentialsTokenHolder clientCredentialsTokenHolder,
+      ZuulProperties zuulProperties,
+      AdminServerProperties adminServerProperties,
+      OAuth2Properties oAuth2Properties,
+      PathMatcher pathMatcher) {
+    this.clientCredentialsTokenHolder = clientCredentialsTokenHolder;
+    this.zuulProperties = zuulProperties;
+    this.adminServerProperties = adminServerProperties;
+    this.oAuth2Properties = oAuth2Properties;
+    this.pathMatcher = pathMatcher;
+  }
 
-	@Override
-    public String filterType() {
-        return ZuulConstants.FILTER_TYPE_PRE;
+  @Override
+  public String filterType() {
+    return ZuulConstants.FILTER_TYPE_PRE;
+  }
+
+  @Override
+  public int filterOrder() {
+    return 0;
+  }
+
+  @Override
+  public Object run() {
+    try {
+      OAuth2AccessToken oAuth2AccessToken = clientCredentialsTokenHolder.get();
+      if (oAuth2AccessToken != null) {
+        RequestContext.getCurrentContext()
+            .addZuulRequestHeader(
+                oAuth2Properties.getAuthorization().getHeader(),
+                AuthenticationTypeEnum.BEARER_TOKEN.getAuthorization(oAuth2AccessToken.getValue()));
+      }
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
     }
+    return null;
+  }
 
-    @Override
-    public int filterOrder() {
-        return 0;
-    }
-
-    @Override
-    public Object run() {
-        try {
-            OAuth2AccessToken oAuth2AccessToken = clientCredentialsTokenHolder.get();
-            if (oAuth2AccessToken != null) {
-				RequestContext.getCurrentContext().addZuulRequestHeader(oAuth2Properties.getAuthorization().getHeader(),
-					AuthenticationTypeEnum.BEARER_TOKEN.getAuthorization(oAuth2AccessToken.getValue()));
-			}
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean shouldFilter() {
-        String requestURI = RequestContext.getCurrentContext().getRequest().getRequestURI();
-		// 过滤掉 Spring Boot Admin 自定义的路由
-		boolean isSpringBootAdmin = pathMatcher.match(adminServerProperties.getContextPath() +
-			ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN + PathMatcherConstants.ALL_CHILD_PATTERN, requestURI);
-		boolean isSpringBootAdminTurbine = pathMatcher.match(PathMatcherConstants.ALL_CHILD_PATTERN + adminServerProperties.getContextPath() +
-			ApplicationConstants.SPRING_BOOT_ADMIN_TURBINE_PATTERN + PathMatcherConstants.ALL_CHILD_PATTERN, requestURI);
-		return isSpringBootAdmin || isSpringBootAdminTurbine || pathMatcher.match(zuulProperties.getPrefix() + PathMatcherConstants.ALL_CHILD_PATTERN, requestURI);
-    }
+  @Override
+  public boolean shouldFilter() {
+    String requestURI = RequestContext.getCurrentContext().getRequest().getRequestURI();
+    // 过滤掉 Spring Boot Admin 自定义的路由
+    boolean isSpringBootAdmin =
+        pathMatcher.match(
+            adminServerProperties.getContextPath()
+                + ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN
+                + PathMatcherConstants.ALL_CHILD_PATTERN,
+            requestURI);
+    boolean isSpringBootAdminTurbine =
+        pathMatcher.match(
+            PathMatcherConstants.ALL_CHILD_PATTERN
+                + adminServerProperties.getContextPath()
+                + ApplicationConstants.SPRING_BOOT_ADMIN_TURBINE_PATTERN
+                + PathMatcherConstants.ALL_CHILD_PATTERN,
+            requestURI);
+    return isSpringBootAdmin
+        || isSpringBootAdminTurbine
+        || pathMatcher.match(
+            zuulProperties.getPrefix() + PathMatcherConstants.ALL_CHILD_PATTERN, requestURI);
+  }
 }

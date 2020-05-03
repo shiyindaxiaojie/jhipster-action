@@ -28,13 +28,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class ApplicationConstants {
 
-    /**
-     * Spring Boot Admin 路径匹配表达式
-     */
-    public static final String SPRING_BOOT_ADMIN_PATTERN = "/api/applications";
+  /** Spring Boot Admin 路径匹配表达式 */
+  public static final String SPRING_BOOT_ADMIN_PATTERN = "/api/applications";
 
-    /**
-     * Spring Boot Admin Turbine 路径匹配表达式
-     */
-    public static final String SPRING_BOOT_ADMIN_TURBINE_PATTERN  = "/api/turbine";
+  /** Spring Boot Admin Turbine 路径匹配表达式 */
+  public static final String SPRING_BOOT_ADMIN_TURBINE_PATTERN = "/api/turbine";
 }

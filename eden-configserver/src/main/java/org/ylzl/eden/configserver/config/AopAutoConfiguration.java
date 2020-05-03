@@ -19,15 +19,15 @@ import org.ylzl.eden.spring.boot.framework.core.ProfileConstants;
 @Configuration
 public class AopAutoConfiguration {
 
-    /**
-     * 注入日志切面
-     *
-     * @return
-     */
-    @Profile(ProfileConstants.SPRING_PROFILE_DEVELOPMENT)
-    @Bean
-    public LoggingAspect loggingAspect() {
-        log.debug("Inject Logging aspect");
-        return new LoggingAspect();
-    }
+  /**
+   * 注入日志切面
+   *
+   * @return
+   */
+  @Profile(ProfileConstants.SPRING_PROFILE_DEVELOPMENT)
+  @Bean
+  public LoggingAspect loggingAspect() {
+    log.debug("Inject Logging aspect");
+    return new LoggingAspect();
+  }
 }

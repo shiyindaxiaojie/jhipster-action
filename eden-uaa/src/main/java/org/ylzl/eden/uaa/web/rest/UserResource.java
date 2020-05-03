@@ -50,55 +50,67 @@ import java.util.List;
 @RestController
 public class UserResource {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public UserResource(UserService userService) {
-        this.userService = userService;
-    }
+  public UserResource(UserService userService) {
+    this.userService = userService;
+  }
 
-    @ApiOperation(value = "创建用户")
-    @PostMapping
-    public ResponseEntity<UserVM> create(@Valid @RequestBody UserDTO dto) throws URISyntaxException {
-        User createdUser = userService.create(dto);
-        UserVM vm = UserMapstruct.INSTANCE.userToUserVM(createdUser);
-        return ResponseEntity.created(new URI("/api/users/" + vm.getLogin())).body(vm);
-    }
+  @ApiOperation(value = "创建用户")
+  @PostMapping
+  public ResponseEntity<UserVM> create(@Valid @RequestBody UserDTO dto) throws URISyntaxException {
+    User createdUser = userService.create(dto);
+    UserVM vm = UserMapstruct.INSTANCE.userToUserVM(createdUser);
+    return ResponseEntity.created(new URI("/api/users/" + vm.getLogin())).body(vm);
+  }
 
-    @ApiOperation(value = "更新用户")
-    @PutMapping
-    public ResponseEntity<UserVM> update(@Valid @RequestBody UserDTO dto) {
-        User modifiedUser = userService.update(dto);
-        UserVM vm = UserMapstruct.INSTANCE.userToUserVM(modifiedUser);
-        return ResponseEntity.ok().body(vm);
-    }
+  @ApiOperation(value = "更新用户")
+  @PutMapping
+  public ResponseEntity<UserVM> update(@Valid @RequestBody UserDTO dto) {
+    User modifiedUser = userService.update(dto);
+    UserVM vm = UserMapstruct.INSTANCE.userToUserVM(modifiedUser);
+    return ResponseEntity.ok().body(vm);
+  }
 
-    @ApiOperation(value = "删除用户")
-    @ApiImplicitParam(value = "账户", name="login", required = true, paramType = "path", dataType = "String")
-    @DeleteMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
-    public ResponseEntity<Void> delete(@PathVariable String login) {
-        userService.delete(login);
-        return ResponseEntity.ok().build();
-    }
+  @ApiOperation(value = "删除用户")
+  @ApiImplicitParam(
+      value = "账户",
+      name = "login",
+      required = true,
+      paramType = "path",
+      dataType = "String")
+  @DeleteMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
+  public ResponseEntity<Void> delete(@PathVariable String login) {
+    userService.delete(login);
+    return ResponseEntity.ok().build();
+  }
 
-    @ApiOperation(value = "获取用户详情")
-    @ApiImplicitParam(value = "账户", name="login", required = true, paramType = "path", dataType = "String")
-    @GetMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
-    public ResponseEntity<UserVM> get(@PathVariable String login) {
-        User user = userService.findOneWithAuthoritiesByLogin(login);
-        UserVM vm = UserMapstruct.INSTANCE.userToUserVM(user);
-        return ResponseEntity.ok().body(vm);
-    }
+  @ApiOperation(value = "获取用户详情")
+  @ApiImplicitParam(
+      value = "账户",
+      name = "login",
+      required = true,
+      paramType = "path",
+      dataType = "String")
+  @GetMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
+  public ResponseEntity<UserVM> get(@PathVariable String login) {
+    User user = userService.findOneWithAuthoritiesByLogin(login);
+    UserVM vm = UserMapstruct.INSTANCE.userToUserVM(user);
+    return ResponseEntity.ok().body(vm);
+  }
 
-    @ApiOperation(value = "获取用户列表")
-    @GetMapping
-    public ResponseEntity<List<UserVM>> getAll(Pageable pageable) {
-        Page<User> users = userService.findAllManagedUsers(pageable);
-        Page<UserVM> vms = users.map(new Converter<User, UserVM>() {
+  @ApiOperation(value = "获取用户列表")
+  @GetMapping
+  public ResponseEntity<List<UserVM>> getAll(Pageable pageable) {
+    Page<User> users = userService.findAllManagedUsers(pageable);
+    Page<UserVM> vms =
+        users.map(
+            new Converter<User, UserVM>() {
 
-            public UserVM convert(User user) {
+              public UserVM convert(User user) {
                 return UserMapstruct.INSTANCE.userToUserVM(user);
-            }
-        });
-        return new ResponseEntity<>(vms.getContent(), HttpStatus.OK);
-    }
+              }
+            });
+    return new ResponseEntity<>(vms.getContent(), HttpStatus.OK);
+  }
 }

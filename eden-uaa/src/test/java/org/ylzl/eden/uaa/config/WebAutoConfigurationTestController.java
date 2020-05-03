@@ -28,17 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WebAutoConfigurationTestController {
 
-    /**
-     * API 跨域接口
-     */
-    @GetMapping("/api/test-cors")
-    public void testCorsOnApiPath() {
-    }
+  /** API 跨域接口 */
+  @GetMapping("/api/test-cors")
+  public void testCorsOnApiPath() {}
 
-    /**
-     * 其他跨域接口
-     */
-    @GetMapping("/other/test-cors")
-    public void testCorsOnOtherPath() {
-    }
+  /** 其他跨域接口 */
+  @GetMapping("/other/test-cors")
+  public void testCorsOnOtherPath() {}
 }

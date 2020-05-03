@@ -16,7 +16,7 @@ import org.ylzl.eden.spring.boot.framework.web.WebConfigurerAdapter;
 @Configuration
 public class WebAutoConfiguration extends WebConfigurerAdapter {
 
-	public WebAutoConfiguration(FrameworkProperties frameworkProperties, Environment environment) {
-		super(frameworkProperties, environment);
-	}
+  public WebAutoConfiguration(FrameworkProperties frameworkProperties, Environment environment) {
+    super(frameworkProperties, environment);
+  }
 }

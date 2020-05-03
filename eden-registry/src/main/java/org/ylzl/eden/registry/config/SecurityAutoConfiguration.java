@@ -54,96 +54,135 @@ import org.ylzl.eden.spring.boot.security.oauth2.token.store.ClientCredentialsTo
 @Configuration
 public class SecurityAutoConfiguration {
 
-	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint(AdminServerProperties adminServerProperties) {
-		return new UnauthorizedEntryPoint(adminServerProperties);
-	}
+  @Bean
+  public AuthenticationEntryPoint authenticationEntryPoint(
+      AdminServerProperties adminServerProperties) {
+    return new UnauthorizedEntryPoint(adminServerProperties);
+  }
 
-	@Primary // 覆盖 management.security.enabled 自动配置
-	@Configuration
-	public static class JwtWebSecurityAutoConfiguration extends JwtWebSecurityConfigurerAdapter {
+  @Primary // 覆盖 management.security.enabled 自动配置
+  @Configuration
+  public static class JwtWebSecurityAutoConfiguration extends JwtWebSecurityConfigurerAdapter {
 
-		@Value(FrameworkConstants.NAME_PATTERN)
-		private String applicationName;
+    @Value(FrameworkConstants.NAME_PATTERN)
+    private String applicationName;
 
-		private final String managementServerContextPath;
+    private final String managementServerContextPath;
 
-		private final String configServerPrefix;
+    private final String configServerPrefix;
 
-		private final String adminServerContextPath;
+    private final String adminServerContextPath;
 
-		private final ZuulProperties zuulProperties;
+    private final ZuulProperties zuulProperties;
 
-		public JwtWebSecurityAutoConfiguration(JwtTokenProvider jwtTokenProvider, JwtProperties jwtProperties, ManagementServerProperties managementServerProperties,
-											   ConfigServerProperties configServerProperties, AdminServerProperties adminServerProperties,
-											   ZuulProperties zuulProperties) {
-			super(jwtTokenProvider, jwtProperties);
-			this.managementServerContextPath = managementServerProperties.getContextPath();
-			this.configServerPrefix = configServerProperties.getPrefix();
-			this.adminServerContextPath = adminServerProperties.getContextPath();
-			this.zuulProperties = zuulProperties;
-		}
+    public JwtWebSecurityAutoConfiguration(
+        JwtTokenProvider jwtTokenProvider,
+        JwtProperties jwtProperties,
+        ManagementServerProperties managementServerProperties,
+        ConfigServerProperties configServerProperties,
+        AdminServerProperties adminServerProperties,
+        ZuulProperties zuulProperties) {
+      super(jwtTokenProvider, jwtProperties);
+      this.managementServerContextPath = managementServerProperties.getContextPath();
+      this.configServerPrefix = configServerProperties.getPrefix();
+      this.adminServerContextPath = adminServerProperties.getContextPath();
+      this.zuulProperties = zuulProperties;
+    }
 
-		@Override
-		public void configure(WebSecurity web) {
-			super.configure(web);
+    @Override
+    public void configure(WebSecurity web) {
+      super.configure(web);
 
-			web.ignoring()
-				// Spring Boot Admin
-				.antMatchers(adminServerContextPath + "/**/*.{js,css}")
-				.antMatchers(adminServerContextPath + "/img/**")
-				.antMatchers(adminServerContextPath + "/login.html")
-				.antMatchers(adminServerContextPath + "/main.html")
-				.antMatchers(adminServerContextPath + "/third-party/**");
-		}
+      web.ignoring()
+          // Spring Boot Admin
+          .antMatchers(adminServerContextPath + "/**/*.{js,css}")
+          .antMatchers(adminServerContextPath + "/img/**")
+          .antMatchers(adminServerContextPath + "/login.html")
+          .antMatchers(adminServerContextPath + "/main.html")
+          .antMatchers(adminServerContextPath + "/third-party/**");
+    }
 
-		@Override
-		public void configure(HttpSecurity http) throws Exception {
-			super.configure(http);
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+      super.configure(http);
 
-			http.httpBasic()
-				.realmName(applicationName)
-				.and()
-				.authorizeRequests()
-				// Application
-				.antMatchers("/api" + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Eureka
-				.antMatchers("/eureka" + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Hystrix
-				.antMatchers("/hystrix" + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Swagger
-				.antMatchers(SwaggerConstants.DEFAULT_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				.antMatchers(SwaggerConstants.RESOURCES_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				.antMatchers(SwaggerConstants.RESOURCES_CONF_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				// JWT
-				.antMatchers(JwtConstants.ENDPOINT_TOKEN).permitAll()
-				// Zuul
-				.antMatchers(zuulProperties.getPrefix() + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Spring Boot Actuator
-				.antMatchers(managementServerContextPath + "/health").permitAll()
-				.antMatchers(managementServerContextPath + "/jolokia/").permitAll()
-				.antMatchers(managementServerContextPath + "/profiles").permitAll()
-				.antMatchers(managementServerContextPath + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Spring Cloud Config
-				.antMatchers(configServerPrefix + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Spring Boot Admin
-				.antMatchers(adminServerContextPath + ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN + "/*/jolokia/").permitAll()
-				.antMatchers(adminServerContextPath + ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				.anyRequest().authenticated()
-				.and()
-				.formLogin().loginPage(adminServerContextPath + "/login.html");
-		}
-	}
+      http.httpBasic()
+          .realmName(applicationName)
+          .and()
+          .authorizeRequests()
+          // Application
+          .antMatchers("/api" + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Eureka
+          .antMatchers("/eureka" + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Hystrix
+          .antMatchers("/hystrix" + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Swagger
+          .antMatchers(SwaggerConstants.DEFAULT_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          .antMatchers(SwaggerConstants.RESOURCES_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          .antMatchers(SwaggerConstants.RESOURCES_CONF_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          // JWT
+          .antMatchers(JwtConstants.ENDPOINT_TOKEN)
+          .permitAll()
+          // Zuul
+          .antMatchers(zuulProperties.getPrefix() + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Spring Boot Actuator
+          .antMatchers(managementServerContextPath + "/health")
+          .permitAll()
+          .antMatchers(managementServerContextPath + "/jolokia/")
+          .permitAll()
+          .antMatchers(managementServerContextPath + "/profiles")
+          .permitAll()
+          .antMatchers(managementServerContextPath + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Spring Cloud Config
+          .antMatchers(configServerPrefix + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Spring Boot Admin
+          .antMatchers(
+              adminServerContextPath
+                  + ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN
+                  + "/*/jolokia/")
+          .permitAll()
+          .antMatchers(
+              adminServerContextPath
+                  + ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN
+                  + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          .anyRequest()
+          .authenticated()
+          .and()
+          .formLogin()
+          .loginPage(adminServerContextPath + "/login.html");
+    }
+  }
 
-	@Configuration
-	public static class OAuth2WebSecurityAutoConfiguration {
+  @Configuration
+  public static class OAuth2WebSecurityAutoConfiguration {
 
-		@ConditionalOnExpression("'${" + SecurityConstants.PROP_PREFIX + ".oauth2.authorization.client-credentials.client-id}'.length() > 0")
-		@Bean
-		public OAuth2ClientCredentialsFilter oAuth2ClientCredentialsZuulFilter(ClientCredentialsTokenHolder clientCredentialsTokenHolder,
-																			   ZuulProperties zuulProperties, AdminServerProperties adminServerProperties,
-																			   OAuth2Properties oAuth2Properties, PathMatcher pathMatcher) {
-			return new OAuth2ClientCredentialsFilter(clientCredentialsTokenHolder, zuulProperties, adminServerProperties, oAuth2Properties, pathMatcher);
-		}
-	}
+    @ConditionalOnExpression(
+        "'${"
+            + SecurityConstants.PROP_PREFIX
+            + ".oauth2.authorization.client-credentials.client-id}'.length() > 0")
+    @Bean
+    public OAuth2ClientCredentialsFilter oAuth2ClientCredentialsZuulFilter(
+        ClientCredentialsTokenHolder clientCredentialsTokenHolder,
+        ZuulProperties zuulProperties,
+        AdminServerProperties adminServerProperties,
+        OAuth2Properties oAuth2Properties,
+        PathMatcher pathMatcher) {
+      return new OAuth2ClientCredentialsFilter(
+          clientCredentialsTokenHolder,
+          zuulProperties,
+          adminServerProperties,
+          oAuth2Properties,
+          pathMatcher);
+    }
+  }
 }

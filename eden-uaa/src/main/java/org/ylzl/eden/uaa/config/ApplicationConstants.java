@@ -11,13 +11,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class ApplicationConstants {
 
-    /**
-     * 根目录包路径
-     */
-    public static final String BASE_PACKAGE = "org.ylzl.eden.uaa";
+  /** 根目录包路径 */
+  public static final String BASE_PACKAGE = "org.ylzl.eden.uaa";
 
-    /**
-     * JPA 包路径
-     */
-    public static final String JPA_PACKAGE = BASE_PACKAGE + ".repository";
+  /** JPA 包路径 */
+  public static final String JPA_PACKAGE = BASE_PACKAGE + ".repository";
 }

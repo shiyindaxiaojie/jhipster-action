@@ -17,41 +17,41 @@ import java.util.List;
  */
 public interface UserService extends JpaService<User, Long> {
 
-    User createAndRegister(UserDTO userDTO, String password);
+  User createAndRegister(UserDTO userDTO, String password);
 
-    User create(UserDTO userDTO);
+  User create(UserDTO userDTO);
 
-    void deleteNotActivatedUsers();
+  void deleteNotActivatedUsers();
 
-    void delete(String login);
+  void delete(String login);
 
-    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Date dateTime);
+  List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Date dateTime);
 
-    Page<User> findAllManagedUsers(Pageable pageable);
+  Page<User> findAllManagedUsers(Pageable pageable);
 
-    User findOneByActivationKey(String activationKey);
+  User findOneByActivationKey(String activationKey);
 
-    User findOneByEmailIgnoreCase(String email);
+  User findOneByEmailIgnoreCase(String email);
 
-    User findOneByLogin(String login);
+  User findOneByLogin(String login);
 
-    User findOneByResetKey(String resetKey);
+  User findOneByResetKey(String resetKey);
 
-    User findOneWithAuthorities();
+  User findOneWithAuthorities();
 
-    User findOneWithAuthorities(Long id);
+  User findOneWithAuthorities(Long id);
 
-    User findOneWithAuthoritiesByLogin(String login);
+  User findOneWithAuthoritiesByLogin(String login);
 
-    User updateActivation(String key);
+  User updateActivation(String key);
 
-    void updatePassword(String currentPassword, String newPassword);
+  void updatePassword(String currentPassword, String newPassword);
 
-    User updatePasswordByKey(String newPassword, String key);
+  User updatePasswordByKey(String newPassword, String key);
 
-    User updatePasswordByEmail(String mail);
+  User updatePasswordByEmail(String mail);
 
-    User update(UserDTO userDTO);
+  User update(UserDTO userDTO);
 
-    String generatePasswordResetLink(String resetKey);
+  String generatePasswordResetLink(String resetKey);
 }

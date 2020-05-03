@@ -26,13 +26,13 @@ import org.ylzl.eden.spring.boot.framework.web.rest.errors.BadRequestAlertExcept
  */
 public class EmailAlreadyUsedException extends BadRequestAlertException {
 
-    public static final String ERR_LOGIN_ALREADY_USED = "邮箱已被使用";
+  public static final String ERR_LOGIN_ALREADY_USED = "邮箱已被使用";
 
-    public EmailAlreadyUsedException() {
-        super(ERR_LOGIN_ALREADY_USED);
-    }
+  public EmailAlreadyUsedException() {
+    super(ERR_LOGIN_ALREADY_USED);
+  }
 
-    public EmailAlreadyUsedException(String message) {
-        super(message);
-    }
+  public EmailAlreadyUsedException(String message) {
+    super(message);
+  }
 }

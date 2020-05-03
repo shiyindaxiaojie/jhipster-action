@@ -7,9 +7,9 @@ services:
     kafka:
         image: wurstmeister/kafka:1.0.0
         environment:
-            - KAFKA_ADVERTISED_HOST_NAME: localhost
-            - KAFKA_ADVERTISED_PORT: 9092
-            - KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-            - KAFKA_CREATE_TOPICS: "topic_eden"
+            -   KAFKA_ADVERTISED_HOST_NAME: localhost
+            -   KAFKA_ADVERTISED_PORT: 9092
+            -   KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            -   KAFKA_CREATE_TOPICS: "topic_eden"
         ports:
             - 9092:9092

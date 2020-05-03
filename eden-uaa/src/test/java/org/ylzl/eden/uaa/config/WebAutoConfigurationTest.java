@@ -61,200 +61,221 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class WebAutoConfigurationTest {
 
-    private MockServletContext mockServletContext;
+  private MockServletContext mockServletContext;
 
-    private MockEnvironment mockEnvironment;
+  private MockEnvironment mockEnvironment;
 
-	private FrameworkProperties frameworkProperties;
+  private FrameworkProperties frameworkProperties;
 
-	private ManagementServerProperties managementServerProperties;
+  private ManagementServerProperties managementServerProperties;
 
-    private WebAutoConfiguration webAutoConfiguration;
+  private WebAutoConfiguration webAutoConfiguration;
 
-	private MetricRegistry metricRegistry;
+  private MetricRegistry metricRegistry;
 
-    @Before
-    public void setup() {
-        mockServletContext = spy(new MockServletContext());
-        doReturn(mock(FilterRegistration.Dynamic.class)).when(mockServletContext).addFilter(anyString(), any(Filter.class));
-        doReturn(mock(ServletRegistration.Dynamic.class)).when(mockServletContext).addServlet(anyString(), any(Servlet.class));
+  @Before
+  public void setup() {
+    mockServletContext = spy(new MockServletContext());
+    doReturn(mock(FilterRegistration.Dynamic.class))
+        .when(mockServletContext)
+        .addFilter(anyString(), any(Filter.class));
+    doReturn(mock(ServletRegistration.Dynamic.class))
+        .when(mockServletContext)
+        .addServlet(anyString(), any(Servlet.class));
 
-        mockEnvironment = new MockEnvironment();
-		frameworkProperties = new FrameworkProperties();
-		managementServerProperties = new ManagementServerProperties();
-		managementServerProperties.setContextPath("/management");
-        webAutoConfiguration = new WebAutoConfiguration(frameworkProperties, mockEnvironment);
+    mockEnvironment = new MockEnvironment();
+    frameworkProperties = new FrameworkProperties();
+    managementServerProperties = new ManagementServerProperties();
+    managementServerProperties.setContextPath("/management");
+    webAutoConfiguration = new WebAutoConfiguration(frameworkProperties, mockEnvironment);
 
-        metricRegistry = new MetricRegistry();
-        webAutoConfiguration.setMetricRegistry(metricRegistry);
+    metricRegistry = new MetricRegistry();
+    webAutoConfiguration.setMetricRegistry(metricRegistry);
+  }
+
+  /**
+   * 测试启动生产环境 Servlet 上下文
+   *
+   * @throws ServletException
+   */
+  @Test
+  public void testStartUpProdServletContext() throws ServletException {
+    mockEnvironment.setActiveProfiles(ProfileConstants.SPRING_PROFILE_PRODUCTION);
+    webAutoConfiguration.onStartup(mockServletContext);
+
+    assertThat(mockServletContext.getAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE))
+        .isEqualTo(metricRegistry);
+    assertThat(mockServletContext.getAttribute(MetricsServlet.METRICS_REGISTRY))
+        .isEqualTo(metricRegistry);
+    verify(mockServletContext).addFilter(eq("webappMetricsFilter"), any(InstrumentedFilter.class));
+    verify(mockServletContext).addServlet(eq("metricsServlet"), any(MetricsServlet.class));
+    verify(mockServletContext)
+        .addFilter(eq("cachingHttpHeadersFilter"), any(CachingHttpHeadersFilter.class));
+  }
+
+  /**
+   * 测试启动开发环境 Servlet 上下文
+   *
+   * @throws ServletException
+   */
+  @Test
+  public void testStartUpDevServletContext() throws ServletException {
+    mockEnvironment.setActiveProfiles(ProfileConstants.SPRING_PROFILE_DEVELOPMENT);
+    webAutoConfiguration.onStartup(mockServletContext);
+
+    assertThat(mockServletContext.getAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE))
+        .isEqualTo(metricRegistry);
+    assertThat(mockServletContext.getAttribute(MetricsServlet.METRICS_REGISTRY))
+        .isEqualTo(metricRegistry);
+    verify(mockServletContext).addFilter(eq("webappMetricsFilter"), any(InstrumentedFilter.class));
+    verify(mockServletContext).addServlet(eq("metricsServlet"), any(MetricsServlet.class));
+    verify(mockServletContext, never())
+        .addFilter(eq("cachingHttpHeadersFilter"), any(CachingHttpHeadersFilter.class));
+  }
+
+  /** 测试自定义的 Servlet 容器 */
+  @Test
+  public void testCustomizeServletContainer() {
+    mockEnvironment.setActiveProfiles(ProfileConstants.SPRING_PROFILE_PRODUCTION);
+    UndertowEmbeddedServletContainerFactory container =
+        new UndertowEmbeddedServletContainerFactory();
+    webAutoConfiguration.customize(container);
+
+    assertThat(container.getMimeMappings().get("abs")).isEqualTo("audio/x-mpeg");
+    assertThat(container.getMimeMappings().get("html")).isEqualTo("text/html;charset=utf-8");
+    assertThat(container.getMimeMappings().get("json")).isEqualTo("text/html;charset=utf-8");
+    if (container.getDocumentRoot() != null) {
+      assertThat(container.getDocumentRoot().getPath())
+          .isEqualTo(FilenameUtils.separatorsToSystem("target/classes/static"));
     }
 
-    /**
-     * 测试启动生产环境 Servlet 上下文
-     *
-     * @throws ServletException
-     */
-    @Test
-    public void testStartUpProdServletContext() throws ServletException {
-        mockEnvironment.setActiveProfiles(ProfileConstants.SPRING_PROFILE_PRODUCTION);
-        webAutoConfiguration.onStartup(mockServletContext);
-
-        assertThat(mockServletContext.getAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE)).isEqualTo(metricRegistry);
-        assertThat(mockServletContext.getAttribute(MetricsServlet.METRICS_REGISTRY)).isEqualTo(metricRegistry);
-        verify(mockServletContext).addFilter(eq("webappMetricsFilter"), any(InstrumentedFilter.class));
-        verify(mockServletContext).addServlet(eq("metricsServlet"), any(MetricsServlet.class));
-        verify(mockServletContext).addFilter(eq("cachingHttpHeadersFilter"), any(CachingHttpHeadersFilter.class));
+    Builder builder = Undertow.builder();
+    for (UndertowBuilderCustomizer customizer : container.getBuilderCustomizers()) {
+      customizer.customize(builder);
     }
+    OptionMap.Builder serverOptions =
+        (OptionMap.Builder) ReflectionTestUtils.getField(builder, "serverOptions");
+    assertThat(serverOptions.getMap().get(UndertowOptions.ENABLE_HTTP2)).isNull();
+  }
 
-    /**
-     * 测试启动开发环境 Servlet 上下文
-     *
-     * @throws ServletException
-     */
-    @Test
-    public void testStartUpDevServletContext() throws ServletException {
-        mockEnvironment.setActiveProfiles(ProfileConstants.SPRING_PROFILE_DEVELOPMENT);
-        webAutoConfiguration.onStartup(mockServletContext);
+  /** 测试 Undertow 开启 HTTP2 */
+  @Test
+  public void testUndertowHttp2Enabled() {
+    frameworkProperties.getHttp().setVersion(FrameworkProperties.Http.Version.V_2_0);
+    UndertowEmbeddedServletContainerFactory container =
+        new UndertowEmbeddedServletContainerFactory();
+    webAutoConfiguration.customize(container);
 
-        assertThat(mockServletContext.getAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE)).isEqualTo(metricRegistry);
-        assertThat(mockServletContext.getAttribute(MetricsServlet.METRICS_REGISTRY)).isEqualTo(metricRegistry);
-        verify(mockServletContext).addFilter(eq("webappMetricsFilter"), any(InstrumentedFilter.class));
-        verify(mockServletContext).addServlet(eq("metricsServlet"), any(MetricsServlet.class));
-        verify(mockServletContext, never()).addFilter(eq("cachingHttpHeadersFilter"), any(CachingHttpHeadersFilter.class));
+    Builder builder = Undertow.builder();
+    for (UndertowBuilderCustomizer customizer : container.getBuilderCustomizers()) {
+      customizer.customize(builder);
     }
+    OptionMap.Builder serverOptions =
+        (OptionMap.Builder) ReflectionTestUtils.getField(builder, "serverOptions");
+    assertThat(serverOptions.getMap().get(UndertowOptions.ENABLE_HTTP2)).isTrue();
+  }
 
-    /**
-     * 测试自定义的 Servlet 容器
-     */
-    @Test
-    public void testCustomizeServletContainer() {
-        mockEnvironment.setActiveProfiles(ProfileConstants.SPRING_PROFILE_PRODUCTION);
-        UndertowEmbeddedServletContainerFactory container = new UndertowEmbeddedServletContainerFactory();
-        webAutoConfiguration.customize(container);
+  /**
+   * 测试跨域过滤器是否正常处理 API 接口
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testCorsFilterOnApiPath() throws Exception {
+    frameworkProperties.getCors().setAllowedOrigins(Collections.singletonList("*"));
+    frameworkProperties.getCors().setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    frameworkProperties.getCors().setAllowedHeaders(Collections.singletonList("*"));
+    frameworkProperties.getCors().setMaxAge(1800L);
+    frameworkProperties.getCors().setAllowCredentials(true);
 
-        assertThat(container.getMimeMappings().get("abs")).isEqualTo("audio/x-mpeg");
-        assertThat(container.getMimeMappings().get("html")).isEqualTo("text/html;charset=utf-8");
-        assertThat(container.getMimeMappings().get("json")).isEqualTo("text/html;charset=utf-8");
-        if (container.getDocumentRoot() != null) {
-            assertThat(container.getDocumentRoot().getPath()).isEqualTo(FilenameUtils.separatorsToSystem("target/classes/static"));
-        }
-
-        Builder builder = Undertow.builder();
-        for (UndertowBuilderCustomizer customizer: container.getBuilderCustomizers()) {
-            customizer.customize(builder);
-        }
-        OptionMap.Builder serverOptions = (OptionMap.Builder) ReflectionTestUtils.getField(builder, "serverOptions");
-        assertThat(serverOptions.getMap().get(UndertowOptions.ENABLE_HTTP2)).isNull();
-    }
-
-    /**
-     * 测试 Undertow 开启 HTTP2
-     */
-    @Test
-    public void testUndertowHttp2Enabled() {
-        frameworkProperties.getHttp().setVersion(FrameworkProperties.Http.Version.V_2_0);
-        UndertowEmbeddedServletContainerFactory container = new UndertowEmbeddedServletContainerFactory();
-        webAutoConfiguration.customize(container);
-
-        Builder builder = Undertow.builder();
-        for (UndertowBuilderCustomizer customizer: container.getBuilderCustomizers()) {
-            customizer.customize(builder);
-        }
-        OptionMap.Builder serverOptions = (OptionMap.Builder) ReflectionTestUtils.getField(builder, "serverOptions");
-        assertThat(serverOptions.getMap().get(UndertowOptions.ENABLE_HTTP2)).isTrue();
-    }
-
-    /**
-     * 测试跨域过滤器是否正常处理 API 接口
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testCorsFilterOnApiPath() throws Exception {
-		frameworkProperties.getCors().setAllowedOrigins(Collections.singletonList("*"));
-		frameworkProperties.getCors().setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		frameworkProperties.getCors().setAllowedHeaders(Collections.singletonList("*"));
-		frameworkProperties.getCors().setMaxAge(1800L);
-		frameworkProperties.getCors().setAllowCredentials(true);
-
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
-            .addFilters(webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
+    MockMvc mockMvc =
+        MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
+            .addFilters(
+                webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
             .build();
 
-        mockMvc.perform(options("/api/test-cors")
-            .header(HttpHeaders.ORIGIN, "other.domain.com")
-            .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST"))
-            .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"))
-            .andExpect(header().string(HttpHeaders.VARY, "Origin"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,POST,PUT,DELETE"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1800"));
+    mockMvc
+        .perform(
+            options("/api/test-cors")
+                .header(HttpHeaders.ORIGIN, "other.domain.com")
+                .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST"))
+        .andExpect(status().isOk())
+        .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"))
+        .andExpect(header().string(HttpHeaders.VARY, "Origin"))
+        .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,POST,PUT,DELETE"))
+        .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true"))
+        .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1800"));
 
-        mockMvc.perform(get("/api/test-cors")
-            .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"));
-    }
+    mockMvc
+        .perform(get("/api/test-cors").header(HttpHeaders.ORIGIN, "other.domain.com"))
+        .andExpect(status().isOk())
+        .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"));
+  }
 
-    /**
-     * 测试跨域过滤器是否正常处理其他接口
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testCorsFilterOnOtherPath() throws Exception {
-		frameworkProperties.getCors().setAllowedOrigins(Collections.singletonList("*"));
-		frameworkProperties.getCors().setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		frameworkProperties.getCors().setAllowedHeaders(Collections.singletonList("*"));
-		frameworkProperties.getCors().setMaxAge(1800L);
-		frameworkProperties.getCors().setAllowCredentials(true);
+  /**
+   * 测试跨域过滤器是否正常处理其他接口
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testCorsFilterOnOtherPath() throws Exception {
+    frameworkProperties.getCors().setAllowedOrigins(Collections.singletonList("*"));
+    frameworkProperties.getCors().setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    frameworkProperties.getCors().setAllowedHeaders(Collections.singletonList("*"));
+    frameworkProperties.getCors().setMaxAge(1800L);
+    frameworkProperties.getCors().setAllowCredentials(true);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
-            .addFilters(webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
+    MockMvc mockMvc =
+        MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
+            .addFilters(
+                webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
             .build();
 
-        mockMvc.perform(get("/other/test-cors")
-            .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
-    }
+    mockMvc
+        .perform(get("/other/test-cors").header(HttpHeaders.ORIGIN, "other.domain.com"))
+        .andExpect(status().isOk())
+        .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+  }
 
-    /**
-     * 测试跨域过滤器配置 Allowed Origins 为 null
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testCorsFilterDeactivated() throws Exception {
-		frameworkProperties.getCors().setAllowedOrigins(null);
+  /**
+   * 测试跨域过滤器配置 Allowed Origins 为 null
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testCorsFilterDeactivated() throws Exception {
+    frameworkProperties.getCors().setAllowedOrigins(null);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
-            .addFilters(webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
+    MockMvc mockMvc =
+        MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
+            .addFilters(
+                webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
             .build();
 
-        mockMvc.perform(get("/api/test-cors")
-            .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
-    }
+    mockMvc
+        .perform(get("/api/test-cors").header(HttpHeaders.ORIGIN, "other.domain.com"))
+        .andExpect(status().isOk())
+        .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+  }
 
-    /**
-     * 测试跨域过滤器配置 Allowed Origins 为空的列表
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testCorsFilterDeactivated2() throws Exception {
-		frameworkProperties.getCors().setAllowedOrigins(new ArrayList<String>());
+  /**
+   * 测试跨域过滤器配置 Allowed Origins 为空的列表
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testCorsFilterDeactivated2() throws Exception {
+    frameworkProperties.getCors().setAllowedOrigins(new ArrayList<String>());
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
-            .addFilters(webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
+    MockMvc mockMvc =
+        MockMvcBuilders.standaloneSetup(new WebAutoConfigurationTestController())
+            .addFilters(
+                webAutoConfiguration.corsFilter(frameworkProperties, managementServerProperties))
             .build();
 
-        mockMvc.perform(get("/api/test-cors")
-            .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
-    }
+    mockMvc
+        .perform(get("/api/test-cors").header(HttpHeaders.ORIGIN, "other.domain.com"))
+        .andExpect(status().isOk())
+        .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+  }
 }

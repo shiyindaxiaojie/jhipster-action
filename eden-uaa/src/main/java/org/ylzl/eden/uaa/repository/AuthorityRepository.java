@@ -13,5 +13,5 @@ import org.ylzl.eden.uaa.domain.Authority;
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
-    Authority findOneByCode(String code);
+  Authority findOneByCode(String code);
 }

@@ -19,21 +19,21 @@ import java.util.List;
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface UserMapstruct {
 
-    UserMapstruct INSTANCE = Mappers.getMapper(UserMapstruct.class);
+  UserMapstruct INSTANCE = Mappers.getMapper(UserMapstruct.class);
 
-    UserDTO userToUserDTO(User user);
+  UserDTO userToUserDTO(User user);
 
-    List<UserDTO> usersToUserDTOs(List<User> users);
+  List<UserDTO> usersToUserDTOs(List<User> users);
 
-    User userDTOToUser(UserDTO userDTO);
+  User userDTOToUser(UserDTO userDTO);
 
-    List<User> userDTOsToUsers(List<UserDTO> userDTOs);
+  List<User> userDTOsToUsers(List<UserDTO> userDTOs);
 
-    void updateUserFromUserDTO(UserDTO userDTO, @MappingTarget User user);
+  void updateUserFromUserDTO(UserDTO userDTO, @MappingTarget User user);
 
-    void updateUserDTOFromUser(User user, @MappingTarget UserDTO userDTO);
+  void updateUserDTOFromUser(User user, @MappingTarget UserDTO userDTO);
 
-    UserVM userToUserVM(User user);
+  UserVM userToUserVM(User user);
 
-    List<UserVM> usersToUserVMs(List<User> users);
+  List<UserVM> usersToUserVMs(List<User> users);
 }

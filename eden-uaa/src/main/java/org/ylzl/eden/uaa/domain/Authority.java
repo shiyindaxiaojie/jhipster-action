@@ -32,21 +32,21 @@ import java.io.Serializable;
 @Table(name = "uaa_authority")
 public class Authority implements Serializable {
 
-	private static final long serialVersionUID = -7063643228110486345L;
+  private static final long serialVersionUID = -7063643228110486345L;
 
-	@ApiModelProperty(value = "主键")
-    @Id
-    private Long id;
+  @ApiModelProperty(value = "主键")
+  @Id
+  private Long id;
 
-    @ApiModelProperty(value = "名称")
-    @NotNull
-    @Size(max = 20)
-    @Column(length = 20)
-    private String name;
+  @ApiModelProperty(value = "名称")
+  @NotNull
+  @Size(max = 20)
+  @Column(length = 20)
+  private String name;
 
-    @ApiModelProperty(value = "代码")
-    @NotNull
-    @Size(max = 20)
-    @Column(length = 20)
-    private String code;
+  @ApiModelProperty(value = "代码")
+  @NotNull
+  @Size(max = 20)
+  @Column(length = 20)
+  private String code;
 }

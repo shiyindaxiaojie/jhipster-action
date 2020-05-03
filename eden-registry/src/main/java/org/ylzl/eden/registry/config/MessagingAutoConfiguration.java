@@ -39,26 +39,27 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class MessagingAutoConfiguration {
 
-    @Bean
-    @Primary
-    public RemindingNotifier remindingNotifier() {
-        RemindingNotifier remindingNotifier = new RemindingNotifier(filteringNotifier(loggerNotifier()));
-        remindingNotifier.setReminderPeriod(TimeUnit.MINUTES.toMillis(10));
-        return remindingNotifier;
-    }
+  @Bean
+  @Primary
+  public RemindingNotifier remindingNotifier() {
+    RemindingNotifier remindingNotifier =
+        new RemindingNotifier(filteringNotifier(loggerNotifier()));
+    remindingNotifier.setReminderPeriod(TimeUnit.MINUTES.toMillis(10));
+    return remindingNotifier;
+  }
 
-    @Bean
-    public FilteringNotifier filteringNotifier(Notifier delegate) {
-        return new FilteringNotifier(delegate);
-    }
+  @Bean
+  public FilteringNotifier filteringNotifier(Notifier delegate) {
+    return new FilteringNotifier(delegate);
+  }
 
-    @Bean
-    public LoggingNotifier loggerNotifier() {
-        return new LoggingNotifier();
-    }
+  @Bean
+  public LoggingNotifier loggerNotifier() {
+    return new LoggingNotifier();
+  }
 
-    @Scheduled(fixedRate = 60_000)
-    public void remind() {
-        remindingNotifier().sendReminders();
-    }
+  @Scheduled(fixedRate = 60_000)
+  public void remind() {
+    remindingNotifier().sendReminders();
+  }
 }

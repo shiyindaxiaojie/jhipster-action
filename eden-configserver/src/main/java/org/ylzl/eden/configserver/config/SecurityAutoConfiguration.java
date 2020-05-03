@@ -25,47 +25,60 @@ import org.ylzl.eden.spring.boot.security.jwt.token.JwtTokenProvider;
 @Configuration
 public class SecurityAutoConfiguration {
 
-	@Primary // 覆盖 management.security.enabled 自动配置
-	@Configuration
-	public static class JwtWebSecurityAutoConfiguration extends JwtWebSecurityConfigurerAdapter {
+  @Primary // 覆盖 management.security.enabled 自动配置
+  @Configuration
+  public static class JwtWebSecurityAutoConfiguration extends JwtWebSecurityConfigurerAdapter {
 
-		@Value(FrameworkConstants.NAME_PATTERN)
-		private String applicationName;
+    @Value(FrameworkConstants.NAME_PATTERN)
+    private String applicationName;
 
-		private final String managementServerContextPath;
+    private final String managementServerContextPath;
 
-		private final String configServerPrefix;
+    private final String configServerPrefix;
 
-		public JwtWebSecurityAutoConfiguration(JwtTokenProvider jwtTokenProvider, JwtProperties jwtProperties,
-										 ManagementServerProperties managementServerProperties, ConfigServerProperties configServerProperties) {
-			super(jwtTokenProvider, jwtProperties);
-			this.managementServerContextPath = managementServerProperties.getContextPath();
-			this.configServerPrefix = configServerProperties.getPrefix();
-		}
+    public JwtWebSecurityAutoConfiguration(
+        JwtTokenProvider jwtTokenProvider,
+        JwtProperties jwtProperties,
+        ManagementServerProperties managementServerProperties,
+        ConfigServerProperties configServerProperties) {
+      super(jwtTokenProvider, jwtProperties);
+      this.managementServerContextPath = managementServerProperties.getContextPath();
+      this.configServerPrefix = configServerProperties.getPrefix();
+    }
 
-		@Override
-		public void configure(HttpSecurity http) throws Exception {
-			super.configure(http);
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+      super.configure(http);
 
-			http.httpBasic()
-				.realmName(applicationName)
-				.and()
-				.authorizeRequests()
-				// Application
-				.antMatchers("/api" + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Swagger
-				.antMatchers(SwaggerConstants.DEFAULT_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				.antMatchers(SwaggerConstants.RESOURCES_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				.antMatchers(SwaggerConstants.RESOURCES_CONF_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				// JWT
-				.antMatchers(JwtConstants.ENDPOINT_TOKEN).permitAll()
-				// Spring Boot Actuator
-				.antMatchers(managementServerContextPath + "/health").permitAll()
-				.antMatchers(managementServerContextPath + "/jolokia/").permitAll()
-				.antMatchers(managementServerContextPath + "/profiles").permitAll()
-				.antMatchers(managementServerContextPath + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Spring Cloud Config
-				.antMatchers(configServerPrefix + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated();
-		}
-	}
+      http.httpBasic()
+          .realmName(applicationName)
+          .and()
+          .authorizeRequests()
+          // Application
+          .antMatchers("/api" + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Swagger
+          .antMatchers(SwaggerConstants.DEFAULT_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          .antMatchers(SwaggerConstants.RESOURCES_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          .antMatchers(SwaggerConstants.RESOURCES_CONF_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          // JWT
+          .antMatchers(JwtConstants.ENDPOINT_TOKEN)
+          .permitAll()
+          // Spring Boot Actuator
+          .antMatchers(managementServerContextPath + "/health")
+          .permitAll()
+          .antMatchers(managementServerContextPath + "/jolokia/")
+          .permitAll()
+          .antMatchers(managementServerContextPath + "/profiles")
+          .permitAll()
+          .antMatchers(managementServerContextPath + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Spring Cloud Config
+          .antMatchers(configServerPrefix + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated();
+    }
+  }
 }

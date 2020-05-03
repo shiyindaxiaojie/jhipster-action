@@ -20,30 +20,30 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    String USERS_BY_EMAIL_CACHE = "usersByEmail";
+  String USERS_BY_EMAIL_CACHE = "usersByEmail";
 
-    String USERS_BY_LOGIN_CACHE = "usersByLogin";
+  String USERS_BY_LOGIN_CACHE = "usersByLogin";
 
-    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Date dateTime);
+  List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Date dateTime);
 
-    Page<User> findAllByLoginNot(Pageable pageable, String login);
+  Page<User> findAllByLoginNot(Pageable pageable, String login);
 
-    User findOneByActivationKey(String activationKey);
+  User findOneByActivationKey(String activationKey);
 
-    User findOneByEmailIgnoreCase(String email);
+  User findOneByEmailIgnoreCase(String email);
 
-    User findOneByLogin(String login);
+  User findOneByLogin(String login);
 
-    User findOneByResetKey(String resetKey);
+  User findOneByResetKey(String resetKey);
 
-    @EntityGraph(attributePaths = "authorities")
-    @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
-    User findOneWithAuthoritiesByEmail(String email);
+  @EntityGraph(attributePaths = "authorities")
+  @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
+  User findOneWithAuthoritiesByEmail(String email);
 
-    @EntityGraph(attributePaths = "authorities")
-    User findOneWithAuthoritiesById(Long id);
+  @EntityGraph(attributePaths = "authorities")
+  User findOneWithAuthoritiesById(Long id);
 
-    @EntityGraph(attributePaths = "authorities")
-    @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
-    User findOneWithAuthoritiesByLogin(String login);
+  @EntityGraph(attributePaths = "authorities")
+  @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
+  User findOneWithAuthoritiesByLogin(String login);
 }
