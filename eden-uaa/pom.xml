@@ -53,6 +53,39 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>mysql</id>
+			<properties>
+				<spring.datasource.driver>com.mysql.jdbc.Driver</spring.datasource.driver>
+				<spring.jpa.database>MYSQL</spring.jpa.database>
+				<spring.jpa.database-platform>org.hibernate.dialect.MySQLDialect</spring.jpa.database-platform>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>${mysql.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>mysql8</id>
+			<activation>true</activation>
+			<properties>
+				<spring.datasource.driver>com.mysql.cj.jdbc.Driver</spring.datasource.driver>
+				<spring.jpa.database>MYSQL</spring.jpa.database>
+				<spring.jpa.database-platform>org.hibernate.dialect.MySQLDialect</spring.jpa.database-platform>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.ylzl</groupId>
+					<artifactId>eden-mysql8-spring-boot-starter</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
     <dependencies>
 		<dependency>
 			<groupId>org.ylzl</groupId>
