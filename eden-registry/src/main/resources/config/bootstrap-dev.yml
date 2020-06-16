@@ -1,0 +1,6 @@
+spring:
+  security:
+    user:
+      name: eden
+      password: eden
+      roles: ADMIN

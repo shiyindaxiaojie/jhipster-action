@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
@@ -33,7 +34,7 @@
 			<organization>ylzl</organization>
 			<organizationUrl>https://github.com/eden-lab</organizationUrl>
 			<roles>
-				<role>DevOps</role>
+				<role>Architecture</role>
 			</roles>
 		</developer>
 	</developers>
@@ -48,7 +49,8 @@
 	<scm>
 		<url>https://github.com/eden-lab/eden-microservice</url>
 		<connection>scm:git:git://github.com/eden-lab/eden-microservice.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/eden-lab/eden-microservice.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com/eden-lab/eden-microservice.git
+		</developerConnection>
 	</scm>
 
 	<repositories>

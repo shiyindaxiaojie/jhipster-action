@@ -16,24 +16,24 @@ import org.ylzl.eden.spring.boot.support.SpringBootApplicationAdapter;
 @SpringBootApplication
 public class Application extends SpringBootApplicationAdapter {
 
-	/**
-	 * 构造函数
-	 *
-	 * @param env 运行环境
-	 */
-    public Application(Environment env) {
-        super(env);
-    }
+  /**
+   * 构造函数
+   *
+   * @param env 运行环境
+   */
+  public Application(Environment env) {
+    super(env);
+  }
 
-    /**
-     * 启动入口
-     *
-     * @param args 命令行参数
-     */
-    public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(Application.class);
-        Environment env = run(app, args);
-        logApplicationServerAfterRunning(env);
-        logConfigServerAfterRunning(env);
-    }
+  /**
+   * 启动入口
+   *
+   * @param args 命令行参数
+   */
+  public static void main(String[] args) {
+    SpringApplication app = new SpringApplication(Application.class);
+    Environment env = run(app, args);
+    logApplicationServerAfterRunning(env);
+    logConfigServerAfterRunning(env);
+  }
 }

@@ -19,6 +19,7 @@ package org.ylzl.eden.admin.config.swagger;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.Route;
 import org.springframework.cloud.netflix.zuul.filters.RouteLocator;
@@ -34,7 +35,6 @@ import org.ylzl.eden.spring.boot.integration.swagger.SwaggerConstants;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,60 +49,69 @@ import java.util.List;
 @Component
 public class DiscoverySwaggerResourcesProvider implements SwaggerResourcesProvider {
 
-	@Value(FrameworkConstants.NAME_PATTERN)
-	private String applicationName;
+  @Value(FrameworkConstants.NAME_PATTERN)
+  private String applicationName;
 
-    private final RouteLocator routeLocator;
+  private final RouteLocator routeLocator;
 
-    private final AdminServerProperties adminServerProperties;
+  private final AdminServerProperties adminServerProperties;
 
-    private final PathMatcher pathMatcher;
+  private final PathMatcher pathMatcher;
 
-    public DiscoverySwaggerResourcesProvider(RouteLocator routeLocator, AdminServerProperties adminServerProperties, PathMatcher pathMatcher ) {
-        this.routeLocator = routeLocator;
-        this.adminServerProperties = adminServerProperties;
-        this.pathMatcher = pathMatcher;
-    }
+  public DiscoverySwaggerResourcesProvider(
+      RouteLocator routeLocator,
+      AdminServerProperties adminServerProperties,
+      PathMatcher pathMatcher) {
+    this.routeLocator = routeLocator;
+    this.adminServerProperties = adminServerProperties;
+    this.pathMatcher = pathMatcher;
+  }
 
-    @Override
-    public List<SwaggerResource> get() {
-        List<SwaggerResource> resources = new ArrayList<>();
-        resources.add(swaggerResource(applicationName, SwaggerConstants.DEFAULT_URL));
+  @Override
+  public List<SwaggerResource> get() {
+    List<SwaggerResource> resources = Lists.newArrayList();
+    resources.add(swaggerResource(applicationName, SwaggerConstants.DEFAULT_URL));
 
-        List<Route> routes = routeLocator.getRoutes();
-        for (Route route: routes) {
-            if (shouldFilter(route)) {
-                String path = route.getFullPath();
-                for (Route tempRoute : routes) {
-                    // 判断是否配置了 server.servlet.context-path
-                    if (!tempRoute.getId().equals(route.getId()) && tempRoute.getLocation().endsWith(route.getId())) {
-                        path = route.getFullPath().replace(StringConstants.SLASH + route.getId(),
-                            StringUtils.repeat(StringConstants.SLASH + route.getId(), 2));
-                        break;
-                    }
-                }
-                resources.add(swaggerResource(route.getId(), path.replace("**", SwaggerConstants.DEFAULT_URL)));
-            }
+    List<Route> routes = routeLocator.getRoutes();
+    for (Route route : routes) {
+      if (shouldFilter(route)) {
+        String path = route.getFullPath();
+        for (Route tempRoute : routes) {
+          // 判断是否配置了 server.servlet.context-path
+          if (!tempRoute.getId().equals(route.getId())
+              && tempRoute.getLocation().endsWith(route.getId())) {
+            path =
+                route
+                    .getFullPath()
+                    .replace(
+                        StringConstants.SLASH + route.getId(),
+                        StringUtils.repeat(StringConstants.SLASH + route.getId(), 2));
+            break;
+          }
         }
-        return resources;
+        resources.add(
+            swaggerResource(route.getId(), path.replace("**", SwaggerConstants.DEFAULT_URL)));
+      }
     }
+    return resources;
+  }
 
-    private boolean shouldFilter(Route route) {
-        // 过滤掉 Spring Boot Admin 自定义的路由
-		/*String prefix = route.getPrefix();
-		boolean isSpringBootAdmin = pathMatcher.match(adminServerProperties.getContextPath() +
-			ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN + PathMatcherConstants.ALL_CHILD_PATTERN, prefix);
-		boolean isSpringBootAdminTurbine = pathMatcher.match(PathMatcherConstants.ALL_CHILD_PATTERN + adminServerProperties.getContextPath() +
-			ApplicationConstants.SPRING_BOOT_ADMIN_TURBINE_PATTERN + PathMatcherConstants.ALL_CHILD_PATTERN, prefix);
-        return !isSpringBootAdmin && !isSpringBootAdminTurbine;*/
-		return true;
-    }
+  private boolean shouldFilter(Route route) {
+    // 过滤掉 Spring Boot Admin 自定义的路由
+    /*String prefix = route.getPrefix();
+    boolean isSpringBootAdmin = pathMatcher.match(adminServerProperties.getContextPath() +
+    	ApplicationConstants.SPRING_BOOT_ADMIN_PATTERN + PathMatcherConstants.ALL_CHILD_PATTERN, prefix);
+    boolean isSpringBootAdminTurbine = pathMatcher.match(PathMatcherConstants.ALL_CHILD_PATTERN + adminServerProperties.getContextPath() +
+    	ApplicationConstants.SPRING_BOOT_ADMIN_TURBINE_PATTERN + PathMatcherConstants.ALL_CHILD_PATTERN, prefix);
+          return !isSpringBootAdmin && !isSpringBootAdminTurbine;*/
+    return true;
+  }
 
-    private SwaggerResource swaggerResource(String name, String location) {
-        SwaggerResource swaggerResource = new SwaggerResource();
-        swaggerResource.setName(name);
-        swaggerResource.setLocation(location);
-        swaggerResource.setSwaggerVersion(SwaggerConstants.VERSION);
-        return swaggerResource;
-    }
+  private SwaggerResource swaggerResource(String name, String location) {
+    SwaggerResource swaggerResource = new SwaggerResource();
+    swaggerResource.setName(name);
+    swaggerResource.setLocation(location);
+    swaggerResource.setSwaggerVersion(SwaggerConstants.VERSION);
+    return swaggerResource;
+  }
 }

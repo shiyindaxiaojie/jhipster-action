@@ -1,6 +1,7 @@
 package org.ylzl.eden.uaa.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,6 @@ import org.ylzl.eden.spring.boot.framework.web.WebConfigurerAdapter;
 import org.ylzl.eden.spring.boot.framework.web.filter.CorsFilterBuilder;
 import org.ylzl.eden.spring.boot.integration.swagger.SwaggerConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,19 +26,24 @@ import java.util.List;
 @Configuration
 public class WebAutoConfiguration extends WebConfigurerAdapter {
 
-	public WebAutoConfiguration(FrameworkProperties frameworkProperties, Environment environment) {
-		super(frameworkProperties, environment);
-	}
+  public WebAutoConfiguration(FrameworkProperties frameworkProperties, Environment environment) {
+    super(frameworkProperties, environment);
+  }
 
-	@Bean
-	public CorsFilter corsFilter(FrameworkProperties frameworkProperties, ManagementServerProperties managementServerProperties) {
-		CorsConfiguration corsConfiguration = frameworkProperties.getCors();
-		List<String> paths = new ArrayList<>();
-		if (corsConfiguration.getAllowedOrigins() != null && !corsConfiguration.getAllowedOrigins().isEmpty()) {
-			paths.add("/api" + PathMatcherConstants.ALL_CHILD_PATTERN);
-			paths.add(managementServerProperties.getServlet().getContextPath() + PathMatcherConstants.ALL_CHILD_PATTERN);
-			paths.add(SwaggerConstants.DEFAULT_URL);
-		}
-		return CorsFilterBuilder.builder().corsConfiguration(corsConfiguration).paths(paths).build();
-	}
+  @Bean
+  public CorsFilter corsFilter(
+      FrameworkProperties frameworkProperties,
+      ManagementServerProperties managementServerProperties) {
+    CorsConfiguration corsConfiguration = frameworkProperties.getCors();
+    List<String> paths = Lists.newArrayList();
+    if (corsConfiguration.getAllowedOrigins() != null
+        && !corsConfiguration.getAllowedOrigins().isEmpty()) {
+      paths.add("/api" + PathMatcherConstants.ALL_CHILD_PATTERN);
+      paths.add(
+          managementServerProperties.getServlet().getContextPath()
+              + PathMatcherConstants.ALL_CHILD_PATTERN);
+      paths.add(SwaggerConstants.DEFAULT_URL);
+    }
+    return CorsFilterBuilder.builder().corsConfiguration(corsConfiguration).paths(paths).build();
+  }
 }

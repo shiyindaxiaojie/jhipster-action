@@ -19,15 +19,15 @@ import org.ylzl.eden.uaa.aop.LoggingAspect;
 @Configuration
 public class AopAutoConfiguration {
 
-    /**
-     * 配置日志切面
-     *
-     * @return
-     */
-    @Profile(ProfileConstants.SPRING_PROFILE_DEVELOPMENT)
-    @Bean
-    public LoggingAspect loggingAspect() {
-		log.debug("Inject Logging aspect");
-		return new LoggingAspect();
-    }
+  /**
+   * 配置日志切面
+   *
+   * @return
+   */
+  @Profile(ProfileConstants.SPRING_PROFILE_DEVELOPMENT)
+  @Bean
+  public LoggingAspect loggingAspect() {
+    log.debug("Autowired Logging aspect");
+    return new LoggingAspect();
+  }
 }

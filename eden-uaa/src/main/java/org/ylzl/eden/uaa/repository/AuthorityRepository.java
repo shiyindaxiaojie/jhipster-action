@@ -4,6 +4,8 @@ import org.springframework.stereotype.Repository;
 import org.ylzl.eden.spring.boot.data.jpa.repository.JpaRepository;
 import org.ylzl.eden.uaa.domain.Authority;
 
+import java.util.Optional;
+
 /**
  * 权限数据仓库
  *
@@ -13,5 +15,5 @@ import org.ylzl.eden.uaa.domain.Authority;
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
-    Authority findOneByCode(String code);
+  Optional<Authority> findOneByCode(String code);
 }

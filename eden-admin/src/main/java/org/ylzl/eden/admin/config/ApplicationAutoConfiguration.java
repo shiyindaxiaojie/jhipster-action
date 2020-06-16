@@ -52,16 +52,18 @@ import java.util.Map;
 @Configuration
 public class ApplicationAutoConfiguration {
 
-	@Bean
-	public HttpHeadersProvider jwtHttpHeadersProvider(JwtProperties jwtProperties, JwtTokenProvider jwtTokenProvider) {
-		log.debug("Inject HttpHeadersProvider（jwtHttpHeadersProvider）");
-		return (instance) -> {
-			Map<String, String> metaData = instance.getRegistration().getMetadata();
-			String userName = metaData.get("user.name");
-			HttpHeaders httpHeaders = new HttpHeaders();
-			httpHeaders.add(jwtProperties.getAuthorization().getHeader(),
-				jwtTokenProvider.build(userName, FrameworkConstants.SYSTEM, "", true));
-			return httpHeaders;
-		};
-	}
+  @Bean
+  public HttpHeadersProvider jwtHttpHeadersProvider(
+      JwtProperties jwtProperties, JwtTokenProvider jwtTokenProvider) {
+    log.debug("Autowired HttpHeadersProvider（jwtHttpHeadersProvider）");
+    return (instance) -> {
+      Map<String, String> metaData = instance.getRegistration().getMetadata();
+      String userName = metaData.get("user.name");
+      HttpHeaders httpHeaders = new HttpHeaders();
+      httpHeaders.add(
+          jwtProperties.getAuthorization().getHeader(),
+          jwtTokenProvider.build(userName, FrameworkConstants.SYSTEM, "", true));
+      return httpHeaders;
+    };
+  }
 }

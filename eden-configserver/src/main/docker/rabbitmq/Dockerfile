@@ -1,0 +1,6 @@
+FROM rabbitmq:3-management
+
+ENV RABBITMQ_DEFAULT_USER=eden \
+	  RABBITMQ_DEFAULT_PASS=eden
+
+EXPOSE 5672,15672

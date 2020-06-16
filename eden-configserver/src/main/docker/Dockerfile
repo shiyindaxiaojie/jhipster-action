@@ -1,4 +1,4 @@
-FROM openjdk:7-jre-alpine
+FROM openjdk:8-jre-alpine
 
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     RUN_SLEEP=0 \
@@ -11,8 +11,8 @@ ADD entrypoint.sh entrypoint.sh
 RUN chmod 755 entrypoint.sh && chown eden:eden entrypoint.sh
 USER eden
 
-ADD *.jar app.jar
+ADD *.war app.war
 
 ENTRYPOINT ["./entrypoint.sh"]
 
-EXPOSE 8888 5701/udp
+EXPOSE 8888

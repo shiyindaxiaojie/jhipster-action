@@ -1,4 +1,4 @@
-FROM openjdk:7-jre-alpine
+FROM openjdk:8-jre-alpine
 
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     RUN_SLEEP=0 \
@@ -15,4 +15,4 @@ ADD *.war app.war
 
 ENTRYPOINT ["./entrypoint.sh"]
 
-EXPOSE 9999 5701/udp
+EXPOSE 9999

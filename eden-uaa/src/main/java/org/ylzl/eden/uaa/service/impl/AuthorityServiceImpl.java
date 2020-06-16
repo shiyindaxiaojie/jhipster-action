@@ -18,6 +18,7 @@ package org.ylzl.eden.uaa.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.ylzl.eden.spring.boot.framework.web.rest.errors.EntityNotFoundException;
 import org.ylzl.eden.spring.boot.support.service.impl.JpaServiceImpl;
 import org.ylzl.eden.uaa.domain.Authority;
 import org.ylzl.eden.uaa.repository.AuthorityRepository;
@@ -31,17 +32,18 @@ import org.ylzl.eden.uaa.service.AuthorityService;
  */
 @Slf4j
 @Service("authorityService")
-public class AuthorityServiceImpl extends JpaServiceImpl<Authority, Long> implements AuthorityService {
+public class AuthorityServiceImpl extends JpaServiceImpl<Authority, Long>
+    implements AuthorityService {
 
-    private final AuthorityRepository authorityRepository;
+  private final AuthorityRepository authorityRepository;
 
-    public AuthorityServiceImpl(AuthorityRepository authorityRepository) {
-        super(authorityRepository);
-        this.authorityRepository = authorityRepository;
-    }
+  public AuthorityServiceImpl(AuthorityRepository authorityRepository) {
+    super(authorityRepository);
+    this.authorityRepository = authorityRepository;
+  }
 
-    @Override
-    public Authority findOneByCode(String code) {
-        return authorityRepository.findOneByCode(code);
-    }
+	@Override
+	public Authority findOneByCode(String code) {
+		return authorityRepository.findOneByCode(code).orElseThrow(EntityNotFoundException::new);
+	}
 }

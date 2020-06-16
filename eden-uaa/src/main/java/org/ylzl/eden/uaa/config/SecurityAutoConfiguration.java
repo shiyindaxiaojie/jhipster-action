@@ -29,69 +29,90 @@ import java.util.List;
 @Configuration
 public class SecurityAutoConfiguration {
 
-	@Configuration
-	public static class OAuth2SecurityAutoConfiguration extends OAuth2ResourceServerConfigurerAdapter {
+  @Configuration
+  public static class OAuth2SecurityAutoConfiguration
+      extends OAuth2ResourceServerConfigurerAdapter {
 
-		@Value(FrameworkConstants.NAME_PATTERN)
-		private String applicationName;
+    @Value(FrameworkConstants.NAME_PATTERN)
+    private String applicationName;
 
-		private final TokenStore tokenStore;
+    private final TokenStore tokenStore;
 
-		private final String managementServerContextPath;
+    private final String managementServerContextPath;
 
-		public OAuth2SecurityAutoConfiguration(TokenStore tokenStore, ManagementServerProperties managementServerProperties) {
-			super(tokenStore);
-			this.tokenStore = tokenStore;
-			this.managementServerContextPath = managementServerProperties.getServlet().getContextPath();
-		}
+    public OAuth2SecurityAutoConfiguration(
+        TokenStore tokenStore, ManagementServerProperties managementServerProperties) {
+      super(tokenStore);
+      this.tokenStore = tokenStore;
+      this.managementServerContextPath = managementServerProperties.getServlet().getContextPath();
+    }
 
-		@Override
-		public void configure(HttpSecurity http) throws Exception {
-			super.configure(http);
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+      super.configure(http);
 
-			http.authorizeRequests()
-				// Application
-				.antMatchers("/api/account/activate").permitAll()
-				.antMatchers("/api/account/register").permitAll()
-				.antMatchers("/api/account/reset-password/init").permitAll()
-				.antMatchers("/api/account/reset-password/finish").permitAll()
-				.antMatchers("/api/authenticate").permitAll()
-				.antMatchers("/api" + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated()
-				// Swagger
-				.antMatchers(SwaggerConstants.DEFAULT_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				.antMatchers(SwaggerConstants.RESOURCES_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				.antMatchers(SwaggerConstants.RESOURCES_CONF_URL + PathMatcherConstants.ALL_CHILD_PATTERN).permitAll()
-				// OAuth2
-				.antMatchers(OAuth2Constants.ENDPOINT_LOGIN).permitAll()
-				.antMatchers(OAuth2Constants.ENDPOINT_LOGOUT).authenticated()
-				// Spring Boot Actuator
-				.antMatchers(managementServerContextPath + "/health").permitAll()
-				.antMatchers(managementServerContextPath + "/jolokia/").permitAll()
-				.antMatchers(managementServerContextPath + "/profiles").permitAll()
-				.antMatchers(managementServerContextPath + PathMatcherConstants.ALL_CHILD_PATTERN).authenticated();
-		}
+      http.authorizeRequests()
+          // Application
+          .antMatchers("/api/account/activate")
+          .permitAll()
+          .antMatchers("/api/account/register")
+          .permitAll()
+          .antMatchers("/api/account/reset-password/init")
+          .permitAll()
+          .antMatchers("/api/account/reset-password/finish")
+          .permitAll()
+          .antMatchers("/api/authenticate")
+          .permitAll()
+          .antMatchers("/api" + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated()
+          // Swagger
+          .antMatchers(SwaggerConstants.DEFAULT_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          .antMatchers(SwaggerConstants.RESOURCES_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          .antMatchers(SwaggerConstants.RESOURCES_CONF_URL + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .permitAll()
+          // OAuth2
+          .antMatchers(OAuth2Constants.ENDPOINT_LOGIN)
+          .permitAll()
+          .antMatchers(OAuth2Constants.ENDPOINT_LOGOUT)
+          .authenticated()
+          // Spring Boot Actuator
+          .antMatchers(managementServerContextPath + "/health")
+          .permitAll()
+          .antMatchers(managementServerContextPath + "/jolokia/")
+          .permitAll()
+          .antMatchers(managementServerContextPath + "/profiles")
+          .permitAll()
+          .antMatchers(managementServerContextPath + PathMatcherConstants.ALL_CHILD_PATTERN)
+          .authenticated();
+    }
 
-		@Override
-		public void configure(ResourceServerSecurityConfigurer resources) {
-			resources.resourceId(applicationName).tokenStore(tokenStore);
-		}
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) {
+      resources.resourceId(applicationName).tokenStore(tokenStore);
+    }
 
-		/*@Bean
-        public AccessDecisionManager accessDecisionManager() {
-            List<AccessDecisionVoter<? extends Object>> decisionVoters = Arrays.asList(
-                new WebExpressionVoter(),
-                new CustomRoleVoter(),
-                new AuthenticatedVoter());
-            return new UnanimousBased(decisionVoters);
-        }*/
-	}
+    /*@Bean
+    public AccessDecisionManager accessDecisionManager() {
+        List<AccessDecisionVoter<? extends Object>> decisionVoters = Arrays.asList(
+            new WebExpressionVoter(),
+            new CustomRoleVoter(),
+            new AuthenticatedVoter());
+        return new UnanimousBased(decisionVoters);
+    }*/
+  }
 
-	@Configuration
-	public static class UaaSecurityAutoConfiguration extends OAuth2AuthorizationServerConfigurerAdapter {
+  @Configuration
+  public static class UaaSecurityAutoConfiguration
+      extends OAuth2AuthorizationServerConfigurerAdapter {
 
-		public UaaSecurityAutoConfiguration(AuthenticationManager authenticationManager, TokenStore tokenStore,
-											List<TokenEnhancer> tokenEnhancers, OAuth2Properties oAuth2Properties) {
-			super(authenticationManager, tokenStore, tokenEnhancers, oAuth2Properties);
-		}
-	}
+    public UaaSecurityAutoConfiguration(
+        AuthenticationManager authenticationManager,
+        TokenStore tokenStore,
+        List<TokenEnhancer> tokenEnhancers,
+        OAuth2Properties oAuth2Properties) {
+      super(authenticationManager, tokenStore, tokenEnhancers, oAuth2Properties);
+    }
+  }
 }

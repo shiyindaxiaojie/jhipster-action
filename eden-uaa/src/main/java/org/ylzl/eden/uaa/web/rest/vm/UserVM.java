@@ -18,6 +18,4 @@ import org.ylzl.eden.uaa.domain.User;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class UserVM extends User {
-
-}
+public class UserVM extends User {}

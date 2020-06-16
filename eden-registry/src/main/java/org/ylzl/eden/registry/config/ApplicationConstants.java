@@ -26,6 +26,4 @@ import lombok.experimental.UtilityClass;
  * @since 1.0.0
  */
 @UtilityClass
-public final class ApplicationConstants {
-
-}
+public final class ApplicationConstants {}

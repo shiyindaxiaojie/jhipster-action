@@ -41,33 +41,30 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = Application.class)
 public class UserServiceIntTest {
 
-    private static final String DEFAULT_LOGIN = "gyl";
+  private static final String DEFAULT_LOGIN = "gyl";
 
-    private static final String DEFAULT_EMAIL = "1813986321@qq.com";
+  private static final String DEFAULT_EMAIL = "1813986321@qq.com";
 
-    private static final String DEFAULT_LANGKEY = "zh-cn";
+  private static final String DEFAULT_LANGKEY = "zh-cn";
 
-    @Autowired
-    private UserService userService;
+  @Autowired private UserService userService;
 
-    @Autowired
-    private AuditingHandler auditingHandler;
+  @Autowired private AuditingHandler auditingHandler;
 
-    @Mock
-    DateTimeProvider dateTimeProvider;
+  @Mock DateTimeProvider dateTimeProvider;
 
-    private UserDTO userDTO;
+  private UserDTO userDTO;
 
-    @Before
-    public void init() {
-        userDTO = new UserDTO();
-        userDTO.setLogin(DEFAULT_LOGIN);
-        userDTO.setPassword(RandomStringUtils.random(60));
-        userDTO.setActivated(true);
-        userDTO.setEmail(DEFAULT_EMAIL);
-        userDTO.setLangKey(DEFAULT_LANGKEY);
+  @Before
+  public void init() {
+    userDTO = new UserDTO();
+    userDTO.setLogin(DEFAULT_LOGIN);
+    userDTO.setPassword(RandomStringUtils.random(60));
+    userDTO.setActivated(true);
+    userDTO.setEmail(DEFAULT_EMAIL);
+    userDTO.setLangKey(DEFAULT_LANGKEY);
 
-        when(dateTimeProvider.getNow()).thenReturn(DateUtils.toCalendar(new Date()));
-        auditingHandler.setDateTimeProvider(dateTimeProvider);
-    }
+    when(dateTimeProvider.getNow()).thenReturn(DateUtils.toCalendar(new Date()));
+    auditingHandler.setDateTimeProvider(dateTimeProvider);
+  }
 }

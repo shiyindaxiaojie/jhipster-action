@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    image: configserver:2.0.0.RELEASE
+    environment:
+      - _JAVA_OPTIONS=-Xms512m -Xmx512m
+      - RUN_SLEEP=10
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_SECURITY_USER_USERNAME=eden
+      - SPRING_SECURITY_USER_PASSWORD=eden
+    ports:
+      - 8888:8888
+    depends_on:
+      - mysql
+      - registry
+  registry:
+    build:
+      context: registry
+      dockerfile: Dockerfile
+    environment:
+      - RUN_SLEEP=0
+      - SPRING_SECURITY_USER_USERNAME=eden
+      - SPRING_SECURITY_USER_PASSWORD=eden
+    ports:
+      - 8761:8761
+  rabbitmq:
+    build:
+      context: rabbitmq
+      dockerfile: Dockerfile
+    ports:
+      - 5672:5672

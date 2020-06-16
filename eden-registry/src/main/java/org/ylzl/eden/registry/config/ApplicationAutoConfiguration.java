@@ -34,6 +34,4 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({ApplicationProperties.class})
 @Slf4j
 @Configuration
-public class ApplicationAutoConfiguration {
-
-}
+public class ApplicationAutoConfiguration {}

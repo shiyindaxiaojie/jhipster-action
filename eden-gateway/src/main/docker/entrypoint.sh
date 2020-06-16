@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "该应用程序将在 ${RUN_SLEEP} 秒后启动" && sleep ${RUN_SLEEP}
-exec java ${JAVA_OPTS} -noverify -XX:+AlwaysPreTouch -Djava.security.egd=file:/dev/./urandom -jar "${HOME}/app.war" "$@"
+echo "The application will start in ${RUN_SLEEP}s..." && sleep ${RUN_SLEEP}
+exec java ${JAVA_OPTS} -noverify -XX:+AlwaysPreTouch -Djava.security.egd=file:/dev/./urandom -cp /app/resources/:/app/classes/:/app/libs/* "org.ylzl.eden.sample.Application" "$@"

@@ -28,13 +28,13 @@ import org.ylzl.eden.spring.boot.commons.lang.RandomStringUtils;
 @UtilityClass
 public final class GenerateUtils {
 
-    private static final int DEF_COUNT = 20;
+  private static final int DEF_COUNT = 20;
 
-    public static String generateActivationKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT);
-    }
+  public static String generateActivationKey() {
+    return RandomStringUtils.randomNumeric(DEF_COUNT);
+  }
 
-    public static String generateResetKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT);
-    }
+  public static String generateResetKey() {
+    return RandomStringUtils.randomNumeric(DEF_COUNT);
+  }
 }

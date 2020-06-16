@@ -12,9 +12,9 @@ import org.ylzl.eden.spring.boot.framework.core.util.SpringProfileUtils;
  */
 public class ApplicationWebXml extends SpringBootServletInitializer {
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        SpringProfileUtils.addDefaultProfile(builder.application());
-        return builder.sources(Application.class);
-    }
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    SpringProfileUtils.addDefaultProfile(builder.application());
+    return builder.sources(Application.class);
+  }
 }

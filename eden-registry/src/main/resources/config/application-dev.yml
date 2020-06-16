@@ -1,57 +1,54 @@
 eden:
-    integration:
-        logstash:
-            enabled: false
-        swagger:
-            default-include-pattern: /api/.*
-            title: #project.description#
-            version: #project.version#
-    security:
-        jwt:
-            authentication:
-                base64-secret: MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzMyMTIzMmYyOTdhNTdhNWE3NDM4OTRhMGU0YTgwMWZjMw==
-        oauth2:
-            authorization:
-                access-token-uri: http://uaa/oauth/token
-                access-token-uri-service-id: uaa
-                client-credentials:
-                    client-id: client
-                    client-secret: client
-                password:
-                    client-id: password
-                    client-secret: password
-                public-token-key-uri: http://uaa/oauth/token_key
-                public-token-key-uri-service-id: uaa
+  integration:
+    logstash:
+      enabled: false
+    swagger:
+      default-include-pattern: /api/.*
+      title: #project.description#
+      version: #project.version#
+  security:
+    jwt:
+      authentication:
+        base64-secret: MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzMyMTIzMmYyOTdhNTdhNWE3NDM4OTRhMGU0YTgwMWZjMw==
+    oauth2:
+      authorization:
+        access-token-uri: http://uaa/oauth/token
+        access-token-uri-service-id: uaa
+        client-credentials:
+          client-id: internal
+          client-secret: internal
+        password:
+          client-id: webclient
+          client-secret: webclient
+        public-token-key-uri: http://uaa/oauth/token_key
+        public-token-key-uri-service-id: uaa
 
 logging:
-    file:
-        name: target/${spring.application.name}.log
-    level:
-        ROOT: INFO
-        org.ylzl.eden: DEBUG
+  file:
+    name: target/${spring.application.name}.log
+  level:
+    ROOT: INFO
+    org.ylzl.eden: DEBUG
 
 eureka:
-    client:
-        instance-info-replication-interval-seconds: 10
-        registry-fetch-interval-seconds: 10
-        service-url:
-            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
-    instance:
-        hostname: localhost
-        lease-expiration-duration-in-seconds: 10
-        lease-renewal-interval-in-seconds: 5
-        metadata-map:
-            user.name: ${spring.security.user.name}
-            user.password: ${spring.security.user.password}
-    server:
-        enable-self-preservation: false
+  client:
+    instance-info-replication-interval-seconds: 10
+    registry-fetch-interval-seconds: 10
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    hostname: localhost
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  server:
+    enable-self-preservation: false
 
 server:
-    port: 8761
+  port: 8761
 
 spring:
-    security:
-        user:
-            name: admin
-            password: admin
-            roles: ADMIN
+  thymeleaf:
+    cache: false

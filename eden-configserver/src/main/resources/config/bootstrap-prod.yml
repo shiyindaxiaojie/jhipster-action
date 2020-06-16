@@ -1,9 +1,14 @@
 spring:
-    cloud:
-        config:
-            profile: ${spring.profiles.active}
-    rabbitmq:
-        host: localhost
-        port: 5672
-        username: admin
-        password: DevOps@303
+  cloud:
+    config:
+      profile: ${spring.profiles.active}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: eden
+    password: eden
+  security:
+    user:
+      name: eden
+      password: eden
+      roles: ADMIN

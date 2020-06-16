@@ -26,6 +26,4 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.0.0
  */
 @Configuration
-public class CacheAutoConfiguration {
-
-}
+public class CacheAutoConfiguration {}

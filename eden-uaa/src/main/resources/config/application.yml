@@ -1,87 +1,119 @@
 eden:
-    security:
-        oauth2:
-            authorization:
-                server:
-                    enabled: true
-            resource:
-                server:
-                    enabled: true
+  security:
+    oauth2:
+      authorization:
+        server:
+          enabled: true
+      resource:
+        server:
+          enabled: true
 
 eureka:
-    client:
-        enabled: true
-        fetch-registry: true
-        healthcheck:
-            enabled: true
-        register-with-eureka: true
-    instance:
-        appname: ${spring.application.name}
-        health-check-url-path: ${management.endpoints.web.base-path}/health
-        home-page-url-path:
-        instanceId: ${spring.application.name}.${spring.application.instance-id:${random.value}}
-        metadata-map:
-            instanceId: ${eureka.instance.instanceId}
-            profile: ${spring.profiles.active}
-            version: #project.version#
-            zone: primary
-        prefer-ip-address: true
-        status-page-url-path: ${management.endpoints.web.base-path}/info
+  client:
+    enabled: true
+    fetch-registry: true
+    healthcheck:
+      enabled: true
+    register-with-eureka: true
+  instance:
+    appname: ${spring.application.name}
+    health-check-url-path: ${management.endpoints.web.base-path}/health
+    home-page-url-path:
+    instanceId: ${spring.application.name}.${spring.application.instance-id:${random.value}}
+    metadata-map:
+      instanceId: ${eureka.instance.instanceId}
+      profile: ${spring.profiles.active}
+      version: #project.version#
+      zone: primary
+    prefer-ip-address: true
+    status-page-url-path: ${management.endpoints.web.base-path}/info
 
 hystrix:
-    command:
-        default:
-            execution:
-                isolation:
-                    thread:
-                        timeout-in-milliseconds: 5000
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeout-in-milliseconds: 5000
 
 ribbon:
-    eureka:
-        enabled: true
+  eureka:
+    enabled: true
 
 security:
-    oauth2:
-        resource:
-            filter-order: 3
+  oauth2:
+    resource:
+      filter-order: 3
 
 server:
-    servlet:
-        session:
-            cookie:
-                http-only: true
+  servlet:
+    session:
+      cookie:
+        http-only: true
 
 spring:
-    application:
-        name: #project.name#
-    jackson:
-        date-format: yyyy-MM-dd HH:mm:ss
-        serialization:
-            indent-output: true
-        time-zone: GMT+8
-    jmx:
-        default-domain: ${spring.application.name}
-    jpa:
-        hibernate:
-            ddl-auto: none
-        naming:
-            implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-            physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-        open-in-view: false
-        properties:
-            hibernate:
-                cache:
-                    use_second_level_cache: false
-                    use_query_cache: false
-                    use_minimal_puts: true
-                    hazelcast.instance_name: ${spring.application.name}
-                    hazelcast.use_lite_member: true
-                ejb:
-                    entitymanager_factory_name: ${spring.application.name}
-                id:
-                    new_generator_mappings: true
-                region:
-                    factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
-    profiles:
-        active: #spring.profiles.active#
-        include: #spring.profiles.include#
+  application:
+    name: #project.name#
+  data:
+    repositories:
+      bootstrap-mode: deferred
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      indent-output: true
+    time-zone: GMT+8
+  jmx:
+    default-domain: ${spring.application.name}
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    open-in-view: false
+    properties:
+      hibernate.cache.hazelcast.instance_name: ${spring.application.name}
+      hibernate.cache.hazelcast.use_lite_member: true
+      hibernate.cache.region.factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
+      hibernate.cache.use_minimal_puts: true
+      hibernate.cache.use_query_cache: true
+      hibernate.cache.use_second_level_cache: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.generate_statistics: false
+      hibernate.jdbc.time_zone: UTC
+      hibernate.id.new_generator_mappings: true
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: i18n/messages
+  mvc:
+    favicon:
+      enabled: false
+  output:
+    ansi:
+      console-available: true
+  profiles:
+    active: #spring.profiles.active#
+  task:
+    execution:
+      thread-name-prefix: ${spring.application.name}-execution-
+      pool:
+        core-size: 2
+        max-size: 50
+        queue-capacity: 10000
+    scheduling:
+      thread-name-prefix: ${spring.application.name}-scheduling-
+      pool:
+        size: 2
+    thymeleaf:
+      mode: HTML

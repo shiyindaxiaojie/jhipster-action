@@ -17,13 +17,8 @@
 
 package org.ylzl.eden.admin.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 消息自动配置
@@ -33,6 +28,4 @@ import java.util.concurrent.TimeUnit;
  */
 @EnableScheduling
 @Configuration
-public class MessagingAutoConfiguration {
-
-}
+public class MessagingAutoConfiguration {}

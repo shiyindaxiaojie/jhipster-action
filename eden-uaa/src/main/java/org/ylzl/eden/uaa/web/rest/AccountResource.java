@@ -39,21 +39,21 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class AccountResource {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public AccountResource(UserService userService) {
-        this.userService = userService;
-    }
+  public AccountResource(UserService userService) {
+    this.userService = userService;
+  }
 
-    @GetMapping("/authenticate")
-    public String isAuthenticated(HttpServletRequest request) {
-        log.debug("REST 请求获取当前用户是否已认证");
-        return request.getRemoteUser();
-    }
+  @GetMapping("/authenticate")
+  public String isAuthenticated(HttpServletRequest request) {
+    log.debug("REST 请求获取当前用户是否已认证");
+    return request.getRemoteUser();
+  }
 
-    @Timed
-    @GetMapping("/account")
-    public User readAccount() {
-        return userService.findOneWithAuthorities();
-    }
+  @Timed
+  @GetMapping("/account")
+  public User getAccount(HttpServletRequest request) {
+    return userService.findOneWithAuthoritiesByLogin(request.getRemoteUser());
+  }
 }

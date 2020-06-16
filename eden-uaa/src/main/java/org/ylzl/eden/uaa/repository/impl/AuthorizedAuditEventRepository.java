@@ -19,23 +19,26 @@ import org.ylzl.eden.spring.boot.framework.core.FrameworkConstants;
 @Repository
 public class AuthorizedAuditEventRepository extends PersistenceAuditEventRepositoryAdapter {
 
-    private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
+  private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
 
-    public AuthorizedAuditEventRepository(PersistenceAuditEventRepository persistenceAuditEventRepository, AuditEventConverter auditEventConverter) {
-		super(persistenceAuditEventRepository, auditEventConverter);
+  public AuthorizedAuditEventRepository(
+      PersistenceAuditEventRepository persistenceAuditEventRepository,
+      AuditEventConverter auditEventConverter) {
+    super(persistenceAuditEventRepository, auditEventConverter);
+  }
+
+  @Override
+  public PersistentAuditEvent createPersistentAuditEvent(AuditEvent event) {
+    if (!AUTHORIZATION_FAILURE.equals(event.getType())
+        && !FrameworkConstants.ANONYMOUS_USER.equals(event.getPrincipal())) {
+      return new org.ylzl.eden.uaa.domain.AuditEvent();
     }
+    return null;
+  }
 
-	@Override
-	public PersistentAuditEvent createPersistentAuditEvent(AuditEvent event) {
-		if (!AUTHORIZATION_FAILURE.equals(event.getType()) && !FrameworkConstants.ANONYMOUS_USER.equals(event.getPrincipal())) {
-			return new org.ylzl.eden.uaa.domain.AuditEvent();
-		}
-    	return null;
-	}
-
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Override
-    public void add(AuditEvent event) {
-        super.add(event);
-    }
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Override
+  public void add(AuditEvent event) {
+    super.add(event);
+  }
 }

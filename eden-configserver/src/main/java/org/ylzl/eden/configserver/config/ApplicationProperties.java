@@ -10,7 +10,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 1.0.0
  */
 @Data
-@ConfigurationProperties(prefix = "application", ignoreUnknownFields = true)
-public class ApplicationProperties {
-
-}
+@ConfigurationProperties(prefix = "application")
+public class ApplicationProperties {}

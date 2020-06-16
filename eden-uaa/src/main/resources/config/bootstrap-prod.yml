@@ -1,34 +1,33 @@
 eureka:
-    client:
-        service-url:
-            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@localhost:8762/eureka/
-
-security:
-    user:
-        name: admin
-        password: 21232f297a57a5a743894a0e4a801fc3
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@localhost:8762/eureka/
 
 spring:
-    cloud:
-        bus:
-            refresh:
-                enabled: true
-        config:
-            discovery:
-                enabled: true
-                serviceId: configserver
-            fail-fast: true
-            label: master
-            name: ${spring.application.name}
-            password: ${spring.security.user.password}
-            profile: ${spring.profiles.active}
-            retry:
-                initial-interval: 1000
-                max-interval: 2000
-                max-attempts: 100
-            username: ${spring.security.user.name}
-    rabbitmq:
-        host: localhost
-        port: 5672
-        username: admin
-        password: DevOps@303
+  cloud:
+    bus:
+      refresh:
+        enabled: true
+    config:
+      discovery:
+        enabled: true
+        serviceId: configserver
+      fail-fast: true
+      label: master
+      name: ${spring.application.name}
+      password: ${spring.security.user.password}
+      profile: ${spring.profiles.active}
+      retry:
+        initial-interval: 1000
+        max-interval: 2000
+        max-attempts: 100
+      username: ${spring.security.user.name}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: eden
+    password: eden
+  security:
+    user:
+      name: eden
+      password: eden

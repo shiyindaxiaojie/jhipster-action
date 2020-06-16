@@ -1,0 +1,71 @@
+version: '3'
+services:
+  app:
+    image: registry:2.0.0.RELEASE
+    environment:
+      - _JAVA_OPTIONS=-Xms512m -Xmx512m
+      - RUN_SLEEP=15
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_SECURITY_USER_USERNAME=eden
+      - SPRING_SECURITY_USER_PASSWORD=eden
+    ports:
+      - 8080:8080
+    depends_on:
+      - registry
+      - configserver
+      - uaa
+  mysql:
+    build:
+      context: mysql
+      dockerfile: Dockerfile
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - mysql-etc:/etc/my.cnf
+    restart: "always"
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=eden
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=eden
+    ports:
+      - 3306:3306
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+  registry:
+    build:
+      context: registry
+      dockerfile: Dockerfile
+    environment:
+      - RUN_SLEEP=0
+      - SPRING_SECURITY_USER_USERNAME=eden
+      - SPRING_SECURITY_USER_PASSWORD=eden
+    ports:
+      - 8761:8761
+  configserver:
+    build:
+      context: configserver
+      dockerfile: Dockerfile
+    environment:
+      - RUN_SLEEP=5
+      - SPRING_SECURITY_USER_USERNAME=eden
+      - SPRING_SECURITY_USER_PASSWORD=eden
+    ports:
+      - 8888:8888
+    depends_on:
+      - registry
+  uaa:
+    build:
+      context: uaa
+      dockerfile: Dockerfile
+    environment:
+      - RUN_SLEEP=10
+      - SPRING_SECURITY_USER_USERNAME=eden
+      - SPRING_SECURITY_USER_PASSWORD=eden
+    ports:
+      - 9999:9999
+    depends_on:
+      - mysql
+      - configserver
+
+volumes:
+  mysql-data: {}
+  mysql-etc: {}

@@ -3,7 +3,6 @@ package org.ylzl.eden.gateway.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.zuul.EnableZuulServer;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +17,4 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({ApplicationProperties.class})
 @Slf4j
 @Configuration
-public class ApplicationAutoConfiguration {
-
-}
+public class ApplicationAutoConfiguration {}

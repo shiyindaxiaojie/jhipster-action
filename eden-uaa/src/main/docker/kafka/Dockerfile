@@ -1,0 +1,9 @@
+FROM wurstmeister/zookeeper:3.4.6
+
+FROM wurstmeister/kafka:1.0.0
+
+ENV KAFKA_ADVERTISED_HOST_NAME=localhost \
+    KAFKA_ADVERTISED_PORT=9092 \
+    KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+
+EXPOSE 2181 9092

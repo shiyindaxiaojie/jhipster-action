@@ -28,6 +28,4 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @EnableScheduling
 @Configuration
-public class SchedulingAutoConfiguration {
-
-}
+public class SchedulingAutoConfiguration {}

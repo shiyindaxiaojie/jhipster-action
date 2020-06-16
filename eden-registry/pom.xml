@@ -16,26 +16,27 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>eden-registry</artifactId>
-    <packaging>jar</packaging>
-    <name>registry</name>
-    <description>注册中心</description>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>eden-registry</artifactId>
+	<packaging>jar</packaging>
+	<name>registry</name>
+	<description>注册中心</description>
 
-    <parent>
-        <groupId>org.ylzl</groupId>
-        <artifactId>eden-microservice</artifactId>
-        <version>2.0.0.RELEASE</version>
-        <relativePath>../</relativePath>
-    </parent>
+	<parent>
+		<groupId>org.ylzl</groupId>
+		<artifactId>eden-microservice</artifactId>
+		<version>2.0.0.RELEASE</version>
+		<relativePath>../</relativePath>
+	</parent>
 
-    <properties>
-        <server.url>http://localhost:8761</server.url>
+	<properties>
+		<server.url>http://localhost:8761</server.url>
 		<start-class>org.ylzl.eden.registry.Application</start-class>
-    </properties>
+	</properties>
 
 	<build>
 		<plugins>
@@ -57,53 +58,45 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-annotation-processer-spring-boot-starter</artifactId>
 			<scope>provided</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-cloud-admin-client-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-eureka-server-spring-boot-starter</artifactId>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-cloud-admin-client-spring-boot-starter</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-jwt-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-metrics-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-oauth2-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ylzl</groupId>
-            <artifactId>eden-swagger2-spring-boot-starter</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-eureka-server-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-jwt-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-metrics-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-oauth2-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-swagger2-spring-boot-starter</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.ylzl</groupId>
 			<artifactId>eden-test-spring-boot-starter</artifactId>
 			<scope>test</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 </project>

@@ -6,9 +6,6 @@ import org.ylzl.eden.spring.boot.support.service.JpaService;
 import org.ylzl.eden.uaa.domain.User;
 import org.ylzl.eden.uaa.service.dto.UserDTO;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  * 用户业务接口
  *
@@ -17,41 +14,15 @@ import java.util.List;
  */
 public interface UserService extends JpaService<User, Long> {
 
-    User createAndRegister(UserDTO userDTO, String password);
+  User create(UserDTO userDTO);
 
-    User create(UserDTO userDTO);
+  void delete(String login);
 
-    void deleteNotActivatedUsers();
+  Page<User> findAllManagedUsers(Pageable pageable);
 
-    void delete(String login);
+  User findOneWithAuthoritiesByLogin(String login);
 
-    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Date dateTime);
+  User findOneWithAuthoritiesByEmail(String email);
 
-    Page<User> findAllManagedUsers(Pageable pageable);
-
-    User findOneByActivationKey(String activationKey);
-
-    User findOneByEmailIgnoreCase(String email);
-
-    User findOneByLogin(String login);
-
-    User findOneByResetKey(String resetKey);
-
-    User findOneWithAuthorities();
-
-    User findOneWithAuthorities(Long id);
-
-    User findOneWithAuthoritiesByLogin(String login);
-
-    User updateActivation(String key);
-
-    void updatePassword(String currentPassword, String newPassword);
-
-    User updatePasswordByKey(String newPassword, String key);
-
-    User updatePasswordByEmail(String mail);
-
-    User update(UserDTO userDTO);
-
-    String generatePasswordResetLink(String resetKey);
+  User update(UserDTO userDTO);
 }

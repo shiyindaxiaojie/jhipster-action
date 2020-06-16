@@ -11,6 +11,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = true)
-public class ApplicationProperties {
-
-}
+public class ApplicationProperties {}

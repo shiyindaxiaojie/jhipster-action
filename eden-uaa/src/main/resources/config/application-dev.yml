@@ -1,81 +1,71 @@
 application:
-    user:
-        remove-not-activated-amount: -3
+  user:
+    remove-not-activated-amount: -3
 
 eden:
-    integration:
-        logstash:
-            enabled: false
-        swagger:
-            default-include-pattern: /(api|oauth|${management.endpoints.web.base-path})/.*
-            title: #project.description#
-            version: #project.version#
-    security:
-        oauth2:
-            authorization:
-                access-token-uri: http://uaa/oauth/token
-                access-token-uri-service-id: uaa
-                client-credentials:
-                    client-id: client
-                    client-secret: client
-                password:
-                    client-id: password
-                    client-secret: password
-                public-token-key-uri: http://uaa/oauth/token_key
-                public-token-key-uri-service-id: uaa
-            key-store:
-                name: keystore.p12
-                password: password
-                alias: uaa
+  integration:
+    logstash:
+      enabled: false
+    swagger:
+      default-include-pattern: /(api|oauth)/.*
+      title: #project.description#
+      version: #project.version#
+  security:
+    oauth2:
+      authorization:
+        access-token-uri: http://uaa/oauth/token
+        access-token-uri-service-id: uaa
+        client-credentials:
+          client-id: internal
+          client-secret: internal
+        password:
+          client-id: webclient
+          client-secret: webclient
+        public-token-key-uri: http://uaa/oauth/token_key
+        public-token-key-uri-service-id: uaa
+      key-store:
+        name: keystore.p12
+        password: keystore
+        alias: uaa
 
 eureka:
-    client:
-        instance-info-replication-interval-seconds: 10
-        metadata:
-            user:
-                name: ${eden.spring.security.user.name}
-                password: ${eden.spring.security.user.password}
-        registry-fetch-interval-seconds: 10
-    instance:
-        lease-renewal-interval-in-seconds: 5
-        lease-expiration-duration-in-seconds: 10
+  client:
+    instance-info-replication-interval-seconds: 10
+    metadata:
+      user:
+        name: ${eden.spring.security.user.name}
+        password: ${eden.spring.security.user.password}
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
 
 logging:
-    file: target/${spring.application.name}.log
-    level:
-        ROOT: INFO
-        org.ylzl.eden: DEBUG
-
-security:
-    user:
-        name: admin
-        password: 21232f297a57a5a743894a0e4a801fc3
-        roles: ADMIN
+  file:
+    name: target/${spring.application.name}.log
+  level:
+    ROOT: INFO
+    org.ylzl.eden: DEBUG
 
 server:
-    port: 9999
+  port: 9999
 
 spring:
-    datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/#project.name#?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password: DevOps@303
-        hikari:
-            data-source-properties:
-                cachePrepStmts: true
-                prepStmtCacheSize: 250
-                prepStmtCacheSqlLimit: 2048
-                useServerPrepStmts: true
-    jpa:
-        database: #spring.jpa.database#
-        database-platform: #spring.jpa.database-platform#
-        properties:
-            hibernate:
-                generate_statistics: true
-        show-sql: true
-    thymeleaf:
-        cache: false
-    zipkin:
-        base-url: http://localhost:9411
-        enabled: false
+  datasource:
+    url: jdbc:h2:mem:#project.name#;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: root
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: false
+  jpa:
+    show-sql: true
+  liquibase:
+    contexts: dev
+  messages:
+    cache-duration: PT1S
+  profiles:
+    include: swagger
+  thymeleaf:
+    cache: false

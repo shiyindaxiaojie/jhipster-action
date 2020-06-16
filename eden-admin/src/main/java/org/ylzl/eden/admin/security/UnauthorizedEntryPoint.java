@@ -36,19 +36,23 @@ import java.io.IOException;
 @Slf4j
 public class UnauthorizedEntryPoint extends UnauthorizedEntryPointAdapter {
 
-	private final AdminServerProperties adminServerProperties;
+  private final AdminServerProperties adminServerProperties;
 
-	public UnauthorizedEntryPoint(AdminServerProperties adminServerProperties) {
-		this.adminServerProperties = adminServerProperties;
-	}
+  public UnauthorizedEntryPoint(AdminServerProperties adminServerProperties) {
+    this.adminServerProperties = adminServerProperties;
+  }
 
-	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
-		log.debug("Pre-authenticated entry point called. Rejecting access: {}", request.getRequestURI());
-		if (RequestContextHolderUtils.isAjaxRequest(request)) {
-			super.commence(request, response, exception);
-		} else {
-			response.sendRedirect(request.getContextPath() + adminServerProperties.getContextPath() + "/login");
-		}
-	}
+  @Override
+  public void commence(
+      HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
+      throws IOException {
+    log.debug(
+        "Pre-authenticated entry point called. Rejecting access: {}", request.getRequestURI());
+    if (RequestContextHolderUtils.isAjaxRequest(request)) {
+      super.commence(request, response, exception);
+    } else {
+      response.sendRedirect(
+          request.getContextPath() + adminServerProperties.getContextPath() + "/login");
+    }
+  }
 }

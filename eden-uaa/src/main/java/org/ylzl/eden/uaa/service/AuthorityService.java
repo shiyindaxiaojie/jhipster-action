@@ -27,5 +27,5 @@ import org.ylzl.eden.uaa.domain.Authority;
  */
 public interface AuthorityService extends JpaService<Authority, Long> {
 
-    Authority findOneByCode(String code);
+  Authority findOneByCode(String code);
 }

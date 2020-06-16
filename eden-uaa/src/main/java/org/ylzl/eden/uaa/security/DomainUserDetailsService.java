@@ -1,6 +1,7 @@
 package org.ylzl.eden.uaa.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.utils.Lists;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.ylzl.eden.spring.boot.framework.web.rest.errors.EntityNotFoundException;
 import org.ylzl.eden.spring.boot.security.web.rest.error.UserNotActivatedException;
 import org.ylzl.eden.uaa.domain.Authority;
 import org.ylzl.eden.uaa.domain.User;
-import org.ylzl.eden.uaa.repository.UserRepository;
+import org.ylzl.eden.uaa.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,40 +26,39 @@ import java.util.List;
 @Component("userDetailsService")
 public class DomainUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+  private final UserService userService;
 
-    public DomainUserDetailsService(UserRepository userRepository) {
-    	this.userRepository = userRepository;
+  public DomainUserDetailsService(UserService userService) {
+    this.userService = userService;
+  }
+
+  @Transactional(readOnly = true)
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    log.debug("Check username {} is valid", username);
+
+    if (new EmailValidator().isValid(username, null)) {
+      User user = userService.findOneWithAuthoritiesByEmail(username);
+      return this.createSpringSecurityUser(username, user);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("验证用户是否有效：{}", username);
+    String lowercaseLogin = username.toLowerCase();
+    User user = userService.findOneWithAuthoritiesByLogin(lowercaseLogin);
+    return this.createSpringSecurityUser(lowercaseLogin, user);
+  }
 
-        if (new EmailValidator().isValid(username, null)) {
-            User user = userRepository.findOneWithAuthoritiesByEmail(username);
-            if (user == null) {
-                throw new EntityNotFoundException(String.format("用户邮箱不存在：%s", username));
-            }
-            return this.createSpringSecurityUser(username, user);
-        }
-
-        String lowercaseLogin = username.toLowerCase();
-        User user = userRepository.findOneWithAuthoritiesByLogin(lowercaseLogin);
-        return this.createSpringSecurityUser(lowercaseLogin, user);
+  private org.springframework.security.core.userdetails.User createSpringSecurityUser(
+      String lowercaseLogin, User user) {
+    if (!user.getActivated()) {
+      throw new UserNotActivatedException(
+          String.format("Login name %s is not activated", lowercaseLogin));
     }
 
-    private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin,
-                                                                                        User user) {
-        if (!user.getActivated()) {
-            throw new UserNotActivatedException(String.format("用户帐号未激活：%s", lowercaseLogin));
-        }
-
-        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
-        for (Authority authority : user.getAuthorities()) {
-            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(authority.getCode()));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), simpleGrantedAuthorities);
+    List<SimpleGrantedAuthority> simpleGrantedAuthorities = Lists.newArrayList();
+    for (Authority authority : user.getAuthorities()) {
+      simpleGrantedAuthorities.add(new SimpleGrantedAuthority(authority.getCode()));
     }
+    return new org.springframework.security.core.userdetails.User(
+        user.getLogin(), user.getPassword(), simpleGrantedAuthorities);
+  }
 }

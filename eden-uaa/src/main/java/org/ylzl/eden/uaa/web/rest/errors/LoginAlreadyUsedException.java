@@ -18,21 +18,19 @@ package org.ylzl.eden.uaa.web.rest.errors;
 
 import org.ylzl.eden.spring.boot.framework.web.rest.errors.BadRequestAlertException;
 
+import java.text.MessageFormat;
+
 /**
  * 帐号已被使用
  *
  * @author gyl
- * @since 1.0.0
+ * @since 2.0.0
  */
 public class LoginAlreadyUsedException extends BadRequestAlertException {
 
-    public static final String ERR_LOGIN_ALREADY_USED = "帐号已被使用";
+	private static final String ERR_LOGIN_ALREADY_USED = "Login name `{0}` is already in use!";
 
-    public LoginAlreadyUsedException() {
-        super(ERR_LOGIN_ALREADY_USED);
-    }
-
-    public LoginAlreadyUsedException(String message) {
-        super(message);
-    }
+	public LoginAlreadyUsedException(String login) {
+		super(MessageFormat.format(ERR_LOGIN_ALREADY_USED, login));
+	}
 }

@@ -1,12 +1,12 @@
 package org.ylzl.eden.gateway.config;
 
-import org.springframework.context.annotation.Profile;
-import org.ylzl.eden.spring.boot.framework.core.ProfileConstants;
-import org.ylzl.eden.gateway.aop.LoggingAspect;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Profile;
+import org.ylzl.eden.gateway.aop.LoggingAspect;
+import org.ylzl.eden.spring.boot.framework.core.ProfileConstants;
 
 /**
  * 切面自动配置
@@ -19,15 +19,15 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Configuration
 public class AopAutoConfiguration {
 
-    /**
-     * 配置日志切面
-     *
-     * @return
-     */
-    @Profile(ProfileConstants.SPRING_PROFILE_DEVELOPMENT)
-    @Bean
-    public LoggingAspect loggingAspect() {
-		log.debug("Inject Logging aspect");
-		return new LoggingAspect();
-    }
+  /**
+   * 配置日志切面
+   *
+   * @return
+   */
+  @Profile(ProfileConstants.SPRING_PROFILE_DEVELOPMENT)
+  @Bean
+  public LoggingAspect loggingAspect() {
+    log.debug("Autowired Logging aspect");
+    return new LoggingAspect();
+  }
 }

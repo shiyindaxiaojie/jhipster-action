@@ -73,7 +73,8 @@
 
 		<addPrimaryKey columnNames="user_id, authority_id" tableName="uaa_user_authority"/>
 
-		<loadData file="config/liquibase/data/users_authorities.csv" separator=";" tableName="uaa_user_authority"/>
+		<loadData file="config/liquibase/data/users_authorities.csv" separator=";"
+							tableName="uaa_user_authority"/>
 
 		<createTable tableName="uaa_audit_event" remarks="审计事件表">
 			<column name="id" type="bigint" remarks="主键">

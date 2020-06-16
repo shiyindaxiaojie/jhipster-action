@@ -1,8 +1,8 @@
 info:
-    description: #project.description#
+  description: #project.description#
 
 spring:
-    application:
-        name: #project.name#
-    profiles:
-        active: #spring.profiles.active#
+  application:
+    name: #project.name#
+  profiles:
+    active: #spring.profiles.active#

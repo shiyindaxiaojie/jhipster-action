@@ -1,42 +1,39 @@
 eden:
-    integration:
-        logstash:
-            enabled: false
-        swagger:
-            default-include-pattern: /(api|oauth|${management.endpoints.web.base-path})/.*
-            title: #project.description#
-            version: #project.version#
-    security:
-        jwt:
-            authentication:
-                base64-secret: MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzMyMTIzMmYyOTdhNTdhNWE3NDM4OTRhMGU0YTgwMWZjMw==
+  integration:
+    logstash:
+      enabled: false
+    swagger:
+      default-include-pattern: /(api|oauth|${management.endpoints.web.base-path})/.*
+      title: #project.description#
+      version: #project.version#
+  security:
+    jwt:
+      authentication:
+        base64-secret: MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzMyMTIzMmYyOTdhNTdhNWE3NDM4OTRhMGU0YTgwMWZjMw==
 
 eureka:
-    client:
-        instance-info-replication-interval-seconds: 10
-        registry-fetch-interval-seconds: 10
-        service-url:
-            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@localhost:8762/eureka/
-    instance:
-        lease-renewal-interval-in-seconds: 5
-        lease-expiration-duration-in-seconds: 10
-        metadata-map:
-            user.name: ${spring.security.user.name}
-            user.password: ${spring.security.user.password}
+  client:
+    instance-info-replication-interval-seconds: 10
+    registry-fetch-interval-seconds: 10
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@localhost:8762/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
 
 logging:
-    file:
-        name: target/${spring.application.name}.log
-    level:
-        ROOT: INFO
-        org.ylzl.eden: DEBUG
+  file:
+    name: target/${spring.application.name}.log
+  level:
+    ROOT: INFO
+    org.ylzl.eden: DEBUG
 
 server:
-    port: 8888
+  port: 8888
 
 spring:
-    security:
-        user:
-            name: admin
-            password: admin
-            roles: ADMIN
+  thymeleaf:
+    cache: false

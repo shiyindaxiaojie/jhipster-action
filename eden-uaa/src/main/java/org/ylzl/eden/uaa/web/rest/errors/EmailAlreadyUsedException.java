@@ -18,21 +18,19 @@ package org.ylzl.eden.uaa.web.rest.errors;
 
 import org.ylzl.eden.spring.boot.framework.web.rest.errors.BadRequestAlertException;
 
+import java.text.MessageFormat;
+
 /**
  * 邮箱已被使用
  *
  * @author gyl
- * @since 1.0.0
+ * @since 2.0.0
  */
 public class EmailAlreadyUsedException extends BadRequestAlertException {
 
-    public static final String ERR_LOGIN_ALREADY_USED = "邮箱已被使用";
+    private static final String ERR_EMAIL_ALREADY_USED = "Email `{0}` is already in use!";
 
-    public EmailAlreadyUsedException() {
-        super(ERR_LOGIN_ALREADY_USED);
-    }
-
-    public EmailAlreadyUsedException(String message) {
-        super(message);
+    public EmailAlreadyUsedException(String email) {
+        super(MessageFormat.format(ERR_EMAIL_ALREADY_USED, email));
     }
 }

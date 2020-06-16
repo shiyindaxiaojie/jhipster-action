@@ -1,12 +1,12 @@
 info:
-    description: #project.description#
+  description: #project.description#
 
 spring:
-    application:
-        name: #project.name#
-    cloud:
-        config:
-            name: #project.name#
-    profiles:
-        active: #spring.profiles.active#
-        include: #spring.profiles.include#
+  application:
+    name: #project.name#
+  cloud:
+    config:
+      name: #project.name#
+  profiles:
+    active: #spring.profiles.active#
+    include: #spring.profiles.include#

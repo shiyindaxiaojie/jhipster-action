@@ -1,57 +1,66 @@
 eden:
-    security:
-        jwt:
-            authorization:
-                server:
-                    enabled: true
+  security:
+    jwt:
+      authorization:
+        server:
+          enabled: true
 
 eureka:
-    client:
-        enabled: true
-        fetch-registry: true
-        healthcheck:
-            enabled: true
-        register-with-eureka: true
-    instance:
-        appname: ${spring.application.name}
-        health-check-url-path: ${management.endpoints.web.base-path}/health
-        home-page-url-path:
-        instanceId: ${spring.application.name}.${spring.application.instance-id:${random.value}}
-        metadata-map:
-            instanceId: ${eureka.instance.instanceId}
-            profile: ${spring.profiles.active}
-            version: #project.version#
-            zone: primary
-        prefer-ip-address: true
-        status-page-url-path: ${management.endpoints.web.base-path}/info
+  client:
+    enabled: true
+    fetch-registry: true
+    healthcheck:
+      enabled: true
+    register-with-eureka: true
+  instance:
+    appname: ${spring.application.name}
+    health-check-url-path: ${management.endpoints.web.base-path}/health
+    home-page-url-path:
+    instanceId: ${spring.application.name}.${spring.application.instance-id:${random.value}}
+    metadata-map:
+      instanceId: ${eureka.instance.instanceId}
+      profile: ${spring.profiles.active}
+      version: #project.version#
+      zone: primary
+    prefer-ip-address: true
+    status-page-url-path: ${management.endpoints.web.base-path}/info
 
 management:
-    endpoints:
-        web:
-            base-path: /management
-            exposure:
-                include: "*"
-    endpoint:
-        health:
-            show-details: ALWAYS
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
 
 server:
-    servlet:
-        context-path:
-        session:
-            cookie:
-                http-only: true
+  servlet:
+    context-path:
+    session:
+      cookie:
+        http-only: true
 
 spring:
-    application:
-        name: #project.name#
-    jackson:
-        date-format: yyyy-MM-dd HH:mm:ss
-        serialization:
-            indent-output: true
-        time-zone: GMT+8
-    jmx:
-        default-domain: ${spring.application.name}
-    profiles:
-        active: #spring.profiles.active#
-        include: #spring.profiles.include#
+  application:
+    name: #project.name#
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      indent-output: true
+    time-zone: GMT+8
+  jmx:
+    default-domain: ${spring.application.name}
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: i18n/messages
+  mvc:
+    favicon:
+      enabled: false
+  output:
+    ansi:
+      console-available: true
+  profiles:
+    active: #spring.profiles.active#

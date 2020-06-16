@@ -5,11 +5,9 @@ generated-docs/
 generated-sources/
 generated-test-sources/
 h2db/
-jacoco/
 maven-archiver/
 maven-status/
 reports/
-site/
 surefire-reports/
 test-classes/
 test-results/

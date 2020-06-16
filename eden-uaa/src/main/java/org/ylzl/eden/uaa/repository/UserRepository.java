@@ -10,6 +10,7 @@ import org.ylzl.eden.uaa.domain.User;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 用户数据仓库
@@ -20,30 +21,30 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    String USERS_BY_EMAIL_CACHE = "usersByEmail";
+  String USERS_BY_EMAIL_CACHE = "usersByEmail";
 
-    String USERS_BY_LOGIN_CACHE = "usersByLogin";
+  String USERS_BY_LOGIN_CACHE = "usersByLogin";
 
-    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Date dateTime);
+  List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Date dateTime);
 
-    Page<User> findAllByLoginNot(Pageable pageable, String login);
+  Page<User> findAllByLoginNot(Pageable pageable, String login);
 
-    User findOneByActivationKey(String activationKey);
+  Optional<User> findOneByActivationKey(String activationKey);
 
-    User findOneByEmailIgnoreCase(String email);
+  Optional<User> findOneByEmailIgnoreCase(String email);
 
-    User findOneByLogin(String login);
+  Optional<User> findOneByLogin(String login);
 
-    User findOneByResetKey(String resetKey);
+  Optional<User> findOneByResetKey(String resetKey);
 
-    @EntityGraph(attributePaths = "authorities")
-    @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
-    User findOneWithAuthoritiesByEmail(String email);
+  @EntityGraph(attributePaths = "authorities")
+  @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
+  Optional<User> findOneWithAuthoritiesByEmail(String email);
 
-    @EntityGraph(attributePaths = "authorities")
-    User findOneWithAuthoritiesById(Long id);
+  @EntityGraph(attributePaths = "authorities")
+  Optional<User> findOneWithAuthoritiesById(Long id);
 
-    @EntityGraph(attributePaths = "authorities")
-    @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
-    User findOneWithAuthoritiesByLogin(String login);
+  @EntityGraph(attributePaths = "authorities")
+  @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
+  Optional<User> findOneWithAuthoritiesByLogin(String login);
 }

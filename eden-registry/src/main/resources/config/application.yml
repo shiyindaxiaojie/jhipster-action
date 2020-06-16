@@ -1,65 +1,72 @@
 eden:
-    security:
-        jwt:
-            authorization:
-                server:
-                    enabled: true
+  security:
+    jwt:
+      authorization:
+        server:
+          enabled: true
 
 eureka:
-    client:
-        enabled: true
-        fetch-registry: false
-        register-with-eureka: false
-    dashboard:
-        path: /
-    instance:
-        appname: ${spring.application.name}
-        health-check-url-path: ${management.endpoints.web.base-path}/health
-        instanceId: ${spring.application.name}:${spring.application.instance-id:${random.value}}
-        metadata-map:
-            instanceId: ${eureka.instance.instanceId}
-            version: #project.version#
-            zone: primary
-        prefer-ip-address: true
-        status-page-url-path: ${management.endpoints.web.base-path}/info
-    server:
-        enable-self-preservation: false
-        peer-node-read-timeout-ms: 20000
+  client:
+    enabled: true
+    fetch-registry: false
+    register-with-eureka: false
+  dashboard:
+    path: /
+  instance:
+    appname: ${spring.application.name}
+    health-check-url-path: ${management.endpoints.web.base-path}/health
+    instanceId: ${spring.application.name}:${spring.application.instance-id:${random.value}}
+    metadata-map:
+      instanceId: ${eureka.instance.instanceId}
+      version: #project.version#
+      zone: primary
+    prefer-ip-address: true
+    status-page-url-path: ${management.endpoints.web.base-path}/info
+  server:
+    enable-self-preservation: false
+    peer-node-read-timeout-ms: 20000
 
 management:
-    endpoints:
-        web:
-            base-path: /management
-            exposure:
-                include: "*"
-    endpoint:
-        health:
-            show-details: ALWAYS
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: "*"
+  endpoint:
     health:
-        mail:
-            enabled: false
-    metrics:
-        enable:
-            http: true
-            jvm: true
-            logback: true
-            process: true
-            system: true
-        distribution:
-            percentiles-histogram:
-                all: true
-            percentiles:
-                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+      show-details: ALWAYS
+  health:
+    mail:
+      enabled: false
+  metrics:
+    enable:
+      http: true
+      jvm: true
+      logback: true
+      process: true
+      system: true
+    distribution:
+      percentiles-histogram:
+        all: true
+      percentiles:
+        all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
 
 spring:
-    application:
-        name: #project.name#
-    freemarker:
-        prefer-file-system-access: false
-    jmx:
-        default-domain: ${spring.application.name}
-    profiles:
-        active: #spring.profiles.active#
-        include: #spring.profiles.include#
-    thymeleaf:
-        enabled: false
+  application:
+    name: #project.name#
+  freemarker:
+    prefer-file-system-access: false
+  jmx:
+    default-domain: ${spring.application.name}
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: i18n/messages
+  mvc:
+    favicon:
+      enabled: false
+  output:
+    ansi:
+      console-available: true
+  profiles:
+    active: #spring.profiles.active#

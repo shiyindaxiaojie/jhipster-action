@@ -36,25 +36,25 @@ import org.ylzl.eden.spring.boot.support.aop.LoggingAspectAdapter;
 @Aspect
 public class LoggingAspect extends LoggingAspectAdapter {
 
-	@Pointcut("within(@org.springframework.stereotype.Service *)" +
-		" || within(@org.springframework.stereotype.Controller *)" +
-		" || within(@org.springframework.stereotype.Component *)" +
-		" || within(@org.springframework.web.bind.annotation.RestController *)")
-	public void springBeanPointcut() {}
+  @Pointcut(
+      "within(@org.springframework.stereotype.Service *)"
+          + " || within(@org.springframework.stereotype.Controller *)"
+          + " || within(@org.springframework.stereotype.Component *)"
+          + " || within(@org.springframework.web.bind.annotation.RestController *)")
+  public void springBeanPointcut() {}
 
-	@Pointcut("within(org.ylzl.eden.gateway.service..*)" +
-		" || within(org.ylzl.eden.gateway.scheduling..*)")
-	public void applicationPackagePointcut() {}
+  @Pointcut("within(org.ylzl.eden.gateway.scheduling..*)")
+  public void applicationPackagePointcut() {}
 
-	@AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
-	@Override
-	public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
-		super.logAfterThrowing(joinPoint, e);
-	}
+  @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
+  @Override
+  public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
+    super.logAfterThrowing(joinPoint, e);
+  }
 
-	@Around("applicationPackagePointcut() && springBeanPointcut()")
-	@Override
-	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		return super.logAround(joinPoint);
-	}
+  @Around("applicationPackagePointcut() && springBeanPointcut()")
+  @Override
+  public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+    return super.logAround(joinPoint);
+  }
 }

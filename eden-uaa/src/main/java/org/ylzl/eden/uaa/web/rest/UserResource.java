@@ -20,7 +20,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,13 +29,14 @@ import org.ylzl.eden.spring.boot.commons.regex.RegexPattern;
 import org.ylzl.eden.uaa.domain.User;
 import org.ylzl.eden.uaa.service.UserService;
 import org.ylzl.eden.uaa.service.dto.UserDTO;
-import org.ylzl.eden.uaa.service.mapstruct.UserMapstruct;
+import org.ylzl.eden.uaa.service.mapper.UserMapper;
 import org.ylzl.eden.uaa.web.rest.vm.UserVM;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * 用户接口
@@ -50,58 +50,68 @@ import java.util.List;
 @RestController
 public class UserResource {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public UserResource(UserService userService) {
-        this.userService = userService;
-    }
+  public UserResource(UserService userService) {
+    this.userService = userService;
+  }
 
-    @ApiOperation(value = "创建用户")
-    @PostMapping
-    public ResponseEntity<UserVM> createUser(@Valid @RequestBody UserDTO dto) throws URISyntaxException {
-        log.debug("REST 请求保存用户：{}", dto);
-        User createdUser = userService.create(dto);
-        UserVM vm = UserMapstruct.INSTANCE.userToUserVM(createdUser);
-        return ResponseEntity.created(new URI("/api/users/" + vm.getLogin())).body(vm);
-    }
+  @ApiOperation(value = "创建用户")
+  @PostMapping
+  public ResponseEntity<UserVM> create(@Valid @RequestBody UserDTO dto) throws URISyntaxException {
+    User createdUser = userService.create(dto);
+    UserVM vm = UserMapper.INSTANCE.userToUserVM(createdUser);
+    return ResponseEntity.created(new URI("/api/users/" + vm.getLogin())).body(vm);
+  }
 
-    @ApiOperation(value = "删除用户")
-    @ApiImplicitParam(value = "账户", name="login", required = true, paramType = "path", dataType = "String")
-    @DeleteMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-        log.debug("REST 请求删除用户：{}", login);
-        userService.delete(login);
-        return ResponseEntity.ok().build();
-    }
+  @ApiOperation(value = "更新用户")
+  @PutMapping
+  public ResponseEntity<UserVM> update(@Valid @RequestBody UserDTO dto) {
+    User modifiedUser = userService.update(dto);
+    UserVM vm = UserMapper.INSTANCE.userToUserVM(modifiedUser);
+    return ResponseEntity.ok().body(vm);
+  }
 
-    @ApiOperation(value = "获取用户详情")
-    @ApiImplicitParam(value = "账户", name="login", required = true, paramType = "path", dataType = "String")
-    @GetMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
-    public ResponseEntity<UserVM> readUser(@PathVariable String login) {
-        User user = userService.findOneWithAuthoritiesByLogin(login);
-        UserVM vm = UserMapstruct.INSTANCE.userToUserVM(user);
-        return ResponseEntity.ok().body(vm);
-    }
+  @ApiOperation(value = "删除用户")
+  @ApiImplicitParam(
+      value = "账户",
+      name = "login",
+      required = true,
+      paramType = "path",
+      dataType = "String")
+  @DeleteMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
+  public ResponseEntity<Void> delete(@PathVariable String login) {
+    userService.delete(login);
+    return ResponseEntity.ok().build();
+  }
 
-    @ApiOperation(value = "获取用户列表")
-    @GetMapping
-    public ResponseEntity<List<UserVM>> readUsers(Pageable pageable) {
-        Page<User> users = userService.findAllManagedUsers(pageable);
-        Page<UserVM> vms = users.map(new Converter<User, UserVM>() {
+  @ApiOperation(value = "获取用户详情")
+  @ApiImplicitParam(
+      value = "账户",
+      name = "login",
+      required = true,
+      paramType = "path",
+      dataType = "String")
+  @GetMapping("/{login:" + RegexPattern.REGEX_USERNAME + "}")
+  public ResponseEntity<UserVM> get(@PathVariable String login) {
+    User user = userService.findOneWithAuthoritiesByLogin(login);
+    UserVM vm = UserMapper.INSTANCE.userToUserVM(user);
+    return ResponseEntity.ok().body(vm);
+  }
 
-            public UserVM convert(User user) {
-                return UserMapstruct.INSTANCE.userToUserVM(user);
-            }
-        });
-        return new ResponseEntity<>(vms.getContent(), HttpStatus.OK);
-    }
+  @ApiOperation(value = "获取用户列表")
+  @GetMapping
+  public ResponseEntity<List<UserVM>> getAll(Pageable pageable) {
+    Page<User> users = userService.findAllManagedUsers(pageable);
+    Page<UserVM> vms =
+        users.map(
+            new Function<User, UserVM>() {
 
-    @ApiOperation(value = "更新用户")
-    @PutMapping
-    public ResponseEntity<UserVM> updateUser(@Valid @RequestBody UserDTO dto) {
-        log.debug("REST 请求更新用户：{}", dto);
-        User modifiedUser = userService.update(dto);
-        UserVM vm = UserMapstruct.INSTANCE.userToUserVM(modifiedUser);
-        return ResponseEntity.ok().body(vm);
-    }
+              @Override
+              public UserVM apply(User user) {
+                return UserMapper.INSTANCE.userToUserVM(user);
+              }
+            });
+    return new ResponseEntity<>(vms.getContent(), HttpStatus.OK);
+  }
 }

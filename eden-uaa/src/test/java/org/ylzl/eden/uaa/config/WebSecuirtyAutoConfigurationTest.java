@@ -33,21 +33,21 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class WebSecuirtyAutoConfigurationTest {
 
-    @Bean
-    @Primary
-    public TokenStore tokenStore() {
-        return null;
-    }
+  @Bean
+  @Primary
+  public TokenStore tokenStore() {
+    return null;
+  }
 
-    @Bean
-    @Primary
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        return null;
-    }
+  @Bean
+  @Primary
+  public JwtAccessTokenConverter jwtAccessTokenConverter() {
+    return null;
+  }
 
-    @Bean
-    @Primary
-    public RestTemplate loadBalancedRestTemplate(RestTemplateCustomizer customizer) {
-        return null;
-    }
+  @Bean
+  @Primary
+  public RestTemplate loadBalancedRestTemplate(RestTemplateCustomizer customizer) {
+    return null;
+  }
 }
