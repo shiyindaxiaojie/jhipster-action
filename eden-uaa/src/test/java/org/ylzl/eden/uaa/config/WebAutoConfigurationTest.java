@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Web 自动配置测试
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class WebAutoConfigurationTest {
 

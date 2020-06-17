@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
  * 缓存自动配置
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Configuration
 public class CacheAutoConfiguration {

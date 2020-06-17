@@ -35,7 +35,7 @@ import org.ylzl.eden.spring.boot.security.oauth2.token.store.ClientCredentialsTo
  * UAA 令牌过滤器
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Slf4j
 public class OAuth2ClientCredentialsFilter extends ZuulFilter {

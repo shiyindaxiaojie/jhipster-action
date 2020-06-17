@@ -28,7 +28,7 @@ import org.springframework.web.client.RestTemplate;
  * Web Secuirty 自动配置测试
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Configuration
 public class WebSecuirtyAutoConfigurationTest {

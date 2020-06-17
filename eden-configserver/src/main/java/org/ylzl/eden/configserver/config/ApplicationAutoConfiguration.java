@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * 应用自动配置
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @EnableDiscoveryClient
 @EnableConfigurationProperties({ApplicationProperties.class})

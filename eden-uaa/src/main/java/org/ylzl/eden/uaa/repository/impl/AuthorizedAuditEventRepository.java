@@ -14,7 +14,7 @@ import org.ylzl.eden.spring.boot.framework.core.FrameworkConstants;
  * 认证的审计事件数据仓库
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Repository
 public class AuthorizedAuditEventRepository extends PersistenceAuditEventRepositoryAdapter {

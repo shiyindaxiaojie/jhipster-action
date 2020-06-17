@@ -22,7 +22,7 @@ import org.ylzl.eden.spring.boot.framework.web.rest.errors.BadRequestAlertExcept
  * 帐号已被使用
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class LoginAlreadyUsedException extends BadRequestAlertException {
 

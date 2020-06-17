@@ -19,7 +19,7 @@ import java.io.Serializable;
  * 权限域对象
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @AllArgsConstructor
 @Data

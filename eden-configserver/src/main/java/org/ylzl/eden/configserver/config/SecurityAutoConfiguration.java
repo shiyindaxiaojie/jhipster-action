@@ -19,7 +19,7 @@ import org.ylzl.eden.spring.boot.security.jwt.token.JwtTokenProvider;
  * 安全自动配置
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Slf4j
 @Configuration

@@ -26,7 +26,7 @@ import org.ylzl.eden.uaa.Application;
  * 账号接口继承和测试
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)

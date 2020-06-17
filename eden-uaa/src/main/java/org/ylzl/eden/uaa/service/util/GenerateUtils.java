@@ -23,7 +23,7 @@ import org.ylzl.eden.spring.boot.commons.lang.RandomStringUtils;
  * 生成器工具集
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @UtilityClass
 public final class GenerateUtils {

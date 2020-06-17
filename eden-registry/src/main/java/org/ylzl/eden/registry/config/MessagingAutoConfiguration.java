@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * 消息自动配置
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @EnableScheduling
 @Configuration

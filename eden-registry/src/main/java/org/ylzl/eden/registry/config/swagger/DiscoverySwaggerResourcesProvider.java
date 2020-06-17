@@ -43,7 +43,7 @@ import java.util.List;
  * Discovery Swagger 资源提供服务
  *
  * @author gyl
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Profile(ProfileConstants.SPRING_PROFILE_DEVELOPMENT)
 @Slf4j
